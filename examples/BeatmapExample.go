@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GOsu-API-Wrapper/gosu"
+	"../gosu"
 	"fmt"
 )
 
