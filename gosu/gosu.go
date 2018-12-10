@@ -1,3 +1,4 @@
+// Package gosu provides a way to access osu-api in future Go programs.
 package gosu
 
 import (
