@@ -56,7 +56,7 @@ func (l *RateLimit) iterate() bool {
 			l.FirstRequest = time.Now()
 		}
 
-		l.CurrentRequests ++
+		l.CurrentRequests++
 
 		if l.CurrentRequests >= l.MaxRequests {
 			l.CanRequest = false
