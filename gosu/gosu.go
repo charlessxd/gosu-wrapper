@@ -59,4 +59,5 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	s.Limiter.iterate()
 
 	return err
+
 }

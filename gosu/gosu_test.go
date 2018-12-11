@@ -1,7 +1,6 @@
 package gosu
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -26,16 +25,5 @@ func TestSession_BuildCall(t *testing.T) {
 func ExampleNewSession() {
 	s := NewSession(os.Getenv("API-KEY"))
 
-	fmt.Println(json.MarshalIndent(s, "", "\t"))
-	// Output:
-	// {
-	//		Key = "API-KEY",
-	//		Limiter = {
-	// 			MaxRequests:     100,
-	//			CurrentRequests: 0,
-	//			CanRequest:      true,
-	//			FirstRequest:    time.Now(),
-	//			TimeInterval:    60.0,
-	//		}
-	//	}
+	fmt.Println(s)
 }
