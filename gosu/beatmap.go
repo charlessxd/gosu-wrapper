@@ -10,9 +10,6 @@ type BeatmapCall struct {
 	// ID of the beatmap
 	BeatmapID string
 
-	// ID or Username of the target user.
-	UserID string
-
 	// Specific game-mode.
 	// 0 = standard, 1 = taiko, 2 = ctb, 3 = mania
 	Mode string
@@ -23,11 +20,6 @@ type BeatmapCall struct {
 
 	// The beatmap hash
 	Hash string
-
-	// Whether UserID is an ID or a Username.
-	// "id" if ID
-	// "string" if username
-	Type string
 }
 
 // Beatmap stores the data of a beatmap.
@@ -121,7 +113,7 @@ type Beatmap struct {
 	MaxCombo string `json:"max_combo"`
 }
 
-// FetchBeatmap returns metadata about one beatmap.
+// FetchBeatmap returns metadata about one beatmap
 func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	beatmap := new([]Beatmap)
 	v := url.Values{}
@@ -143,11 +135,8 @@ func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	if call.Hash != "" {
 		v.Add(EndpointBeatmapsHash, call.Hash)
 	}
-	if call.Type != "" {
-		v.Add(EndpointBeatmapsType, call.Type)
-	}
 
-	s.ParseJSON(s.BuildCall(EndpointBeatmaps, v), beatmap)
+	s.parseJSON(s.buildCall(EndpointBeatmaps, v), beatmap)
 
 	if len(*beatmap) == 0 {
 		return Beatmap{}, errors.New("no beatmaps found")

@@ -1,4 +1,4 @@
-// Package gosu provides a way to access osu-api in future Go programs.
+// Package gosu provides a method of accessing osu-api in Go programs.
 package gosu
 
 import (
@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// Holds the API key and rate limiter.
 type Session struct {
 	// Osu API Key
 	Key string
@@ -34,12 +35,12 @@ func NewSession(APIKey string) (session Session) {
 }
 
 // Builds an API Call to osu API v1
-func (s *Session) BuildCall(endpoint string, v url.Values) string {
+func (s *Session) buildCall(endpoint string, v url.Values) string {
 	return EndpointAPI + endpoint + v.Encode()
 }
 
 // ParseJSON parses received JSON from url into a target interface
-func (s *Session) ParseJSON(url string, target interface{}) error {
+func (s *Session) parseJSON(url string, target interface{}) error {
 	if !s.Limiter.CanRequest {
 		return errors.New("ratelimit exceded (Limit: " + strconv.Itoa(s.Limiter.MaxRequests) + " requests.)")
 	}
@@ -55,7 +56,7 @@ func (s *Session) ParseJSON(url string, target interface{}) error {
 	buf.ReadFrom(r.Body)
 
 	json.Unmarshal([]byte(buf.String()), &target)
-	s.Limiter.Iterate()
+	s.Limiter.iterate()
 
 	return err
 }

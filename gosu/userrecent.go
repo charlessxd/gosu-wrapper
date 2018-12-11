@@ -71,8 +71,8 @@ type UserRecent []struct {
 }
 
 // FetchUserRecent returns metadata about a user's recent plays.
-func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
-	userrecent := new(UserRecent)
+func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
+	userrecent := new([]UserRecent)
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)
 
@@ -80,7 +80,7 @@ func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 	case call.UserID != "":
 		v.Add(EndpointUserRecentUserID, call.UserID)
 	default:
-		return UserRecent{}, errors.New("no identifying parameter given (UserID)")
+		return []UserRecent{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
@@ -93,7 +93,7 @@ func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 		v.Add(EndpointUserRecentLimit, call.Limit)
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointUserRecent, v), userrecent)
+	s.parseJSON(s.buildCall(EndpointUserRecent, v), userrecent)
 
 	if len(*userrecent) == 0 {
 		return *userrecent, errors.New("user not found")

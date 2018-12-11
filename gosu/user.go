@@ -89,7 +89,7 @@ type User struct {
 }
 
 // UserEvent stores data for events related to an individual osu user.
-type UserEvent []struct {
+type UserEvent struct {
 	// The HTML for the event.
 	DisplayHTML string `json:"display_html"`
 
@@ -126,7 +126,7 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 		v.Add(EndpointUserType, call.Type)
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointUser, v), user)
+	s.parseJSON(s.buildCall(EndpointUser, v), user)
 
 	if len(*user) == 0 {
 		return User{}, errors.New("user not found")

@@ -25,7 +25,7 @@ type UserBestCall struct {
 }
 
 // UserBest stores data for a defined amount of top plays for a specific osu user.
-type UserBest []struct {
+type UserBest struct {
 	// The ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -74,8 +74,8 @@ type UserBest []struct {
 }
 
 // FetchUserBest returns metadata about a user's highest rated plays.
-func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
-	userbest := new(UserBest)
+func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
+	userbest := new([]UserBest)
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)
 
@@ -83,7 +83,7 @@ func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
 	case call.UserID != "":
 		v.Add(EndpointUserBestUserID, call.UserID)
 	default:
-		return UserBest{}, errors.New("no identifying parameter given (UserID)")
+		return []UserBest{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
@@ -96,7 +96,7 @@ func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
 		v.Add(EndpointUserBestLimit, call.Limit)
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointUserBest, v), userbest)
+	s.parseJSON(s.buildCall(EndpointUserBest, v), userbest)
 
 	if len(*userbest) == 0 {
 		return *userbest, errors.New("user not found")

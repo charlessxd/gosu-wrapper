@@ -50,6 +50,9 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 		return *beatmaps, errors.New("no identifying param given (Since, BeatmapSetID)")
 	}
 
+	if call.UserID != "" {
+		v.Add(EndpointBeatmapsUserID, call.UserID)
+	}
 	if call.Mode != "" {
 		v.Add(EndpointBeatmapsMode, call.Mode)
 	}
@@ -63,7 +66,7 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 		v.Add(EndpointBeatmapsType, call.Type)
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointBeatmaps, v), beatmaps)
+	s.parseJSON(s.buildCall(EndpointBeatmaps, v), beatmaps)
 
 	if len(*beatmaps) == 0 {
 		return *beatmaps, errors.New("no beatmaps found")

@@ -1,6 +1,7 @@
 package gosu
 
-var (
+// Endpoint Constants
+const (
 	EndpointOsu    = "https://osu.ppy.sh/"
 	EndpointAPI    = EndpointOsu + "api/"
 	EndpointAPIKey = "k"

@@ -40,7 +40,7 @@ func (s *Session) SetRateLimit(max int, seconds float64) {
 // Update updates the RateLimit's CanRequest and CurrentRequest if
 // TimeInterval seconds have passed since the first request.
 // First request being the request sent when CurrentRequests is 0.
-func (l *RateLimit) Update() {
+func (l *RateLimit) update() {
 	if time.Since(l.FirstRequest).Seconds() >= l.TimeInterval {
 		l.CurrentRequests = 0
 		l.CanRequest = true
@@ -49,8 +49,8 @@ func (l *RateLimit) Update() {
 
 // Iterate tells RateLimit that a request has been made.
 // Returns true if successfully iterated, false if not.
-func (l *RateLimit) Iterate() bool {
-	l.Update()
+func (l *RateLimit) iterate() bool {
+	l.update()
 	if l.CanRequest {
 		if l.CurrentRequests == 0 {
 			l.FirstRequest = time.Now()

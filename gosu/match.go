@@ -36,7 +36,7 @@ type MatchDetails struct {
 }
 
 // MatchGame stores data for all of the games played in a specific multi-player match.
-type MatchGame []struct {
+type MatchGame struct {
 	// The ID of the game.
 	GameID string `json:"game_id"`
 
@@ -68,7 +68,7 @@ type MatchGame []struct {
 }
 
 // MatchScore stores data for each individual user who participated in a game.
-type MatchScore []struct {
+type MatchScore struct {
 	// Zero-based index of the user's slot.
 	Slot string `json:"slot"`
 
@@ -123,12 +123,12 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 
 	switch {
 	case call.MatchID != "":
-		v.Add(EndpointUserUserID, call.MatchID)
+		v.Add(EndpointMatchID, call.MatchID)
 	default:
 		return Match{}, errors.New("no identifying param given (MatchID)")
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointMatch, v), match)
+	s.parseJSON(s.buildCall(EndpointMatch, v), match)
 
 	if len(*match) == 0 {
 		return Match{}, errors.New("match not found")

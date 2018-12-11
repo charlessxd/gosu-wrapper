@@ -31,7 +31,7 @@ type ScoreCall struct {
 }
 
 // Scores stores the data for the top 100 scores of a specific beatmap.
-type Scores []struct {
+type Scores struct {
 	// The ID of the score.
 	ScoreID string `json:"score_id"`
 
@@ -87,8 +87,8 @@ type Scores []struct {
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
-	scores := new(Scores)
+func (s *Session) FetchScores(call ScoreCall) ([]Scores, error) {
+	scores := new([]Scores)
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)
 
@@ -96,7 +96,7 @@ func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
 	case call.BeatmapID != "":
 		v.Add(EndpointScoresBeatmapID, call.BeatmapID)
 	default:
-		return Scores{}, errors.New("no identifying parameter given (BeatmapID)")
+		return []Scores{}, errors.New("no identifying parameter given (BeatmapID)")
 	}
 
 	if call.UserID != "" {
@@ -115,7 +115,7 @@ func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
 		v.Add(EndpointScoresLimit, call.Limit)
 	}
 
-	s.ParseJSON(s.BuildCall(EndpointScores, v), scores)
+	s.parseJSON(s.buildCall(EndpointScores, v), scores)
 
 	if len(*scores) == 0 {
 		return *scores, errors.New("no scores found")
