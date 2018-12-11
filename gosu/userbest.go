@@ -74,7 +74,7 @@ type UserBest []struct {
 }
 
 // FetchUserBest returns metadata about a user's highest rated plays.
-func (s *Session) FetchUserBest(call *UserBestCall) (UserBest, error) {
+func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
 	userbest := new(UserBest)
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)

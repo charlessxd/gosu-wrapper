@@ -116,7 +116,7 @@ type MatchScore []struct {
 }
 
 // FetchMatch returns metadata about a match.
-func (s *Session) FetchMatch(call *MatchCall) (Match, error) {
+func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 	match := new([]Match)
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)

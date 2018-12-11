@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// RateLimit limits the amount of requests per TimeInterval seconds.
 type RateLimit struct {
 	MaxRequests     int
 	CurrentRequests int
@@ -12,6 +13,7 @@ type RateLimit struct {
 	TimeInterval    float64
 }
 
+// NewRateLimit returns an instantiated RateLimit.
 func NewRateLimit() RateLimit {
 	limiter := RateLimit{
 		MaxRequests:     100,
@@ -24,6 +26,7 @@ func NewRateLimit() RateLimit {
 	return limiter
 }
 
+// SetRateLimit sets a Session's MaxRequests and TimeInterval to a given amount.
 func (s *Session) SetRateLimit(max int, seconds float64) {
 	s.Limiter = RateLimit{
 		MaxRequests:     max,
@@ -34,6 +37,9 @@ func (s *Session) SetRateLimit(max int, seconds float64) {
 	}
 }
 
+// Update updates the RateLimit's CanRequest and CurrentRequest if
+// TimeInterval seconds have passed since the first request.
+// First request being the request sent when CurrentRequests is 0.
 func (l *RateLimit) Update() {
 	if time.Since(l.FirstRequest).Seconds() >= l.TimeInterval {
 		l.CurrentRequests = 0
@@ -41,6 +47,8 @@ func (l *RateLimit) Update() {
 	}
 }
 
+// Iterate tells RateLimit that a request has been made.
+// Returns true if successfully iterated, false if not.
 func (l *RateLimit) Iterate() bool {
 	l.Update()
 	if l.CanRequest {
