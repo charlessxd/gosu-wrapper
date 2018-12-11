@@ -15,7 +15,7 @@ func TestRateLimiter_Iterate(t *testing.T) {
 		}
 	}
 	if l.CurrentRequests != l.MaxRequests {
-		t.Fatal("Expected true but got false." )
+		t.Fatal("Expected true but got false.")
 	}
 }
 

@@ -12,16 +12,16 @@ type UserBestCall struct {
 
 	// Specific game-mode.
 	// 0 = standard, 1 = taiko, 2 = ctb, 3 = mania
-	Mode   string
+	Mode string
 
 	// Maximum amount of results
 	// Range between 1 - 100 (defaults to 10).
-	Limit  string
+	Limit string
 
 	// Whether UserID is an ID or a Username.
 	// "id" if ID
 	// "string" if username
-	Type   string
+	Type string
 }
 
 // UserBest stores data for a defined amount of top plays for a specific osu user.
