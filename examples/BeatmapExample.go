@@ -2,7 +2,6 @@ package main
 
 import (
 	"../gosu"
-	"encoding/json"
 	"fmt"
 )
 
@@ -14,10 +13,6 @@ func main() {
 	}
 
 	beatmap, _ := s.FetchBeatmap(call)
-
-
-	json, _ := json.MarshalIndent(beatmap, "", "\t")
-	fmt.Println(string(json))
 
 	fmt.Println(beatmap)
 }
