@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// Holds the API key and rate limiter.
+// Session holds the API key and rate limiter.
 type Session struct {
 	// Osu API Key
 	Key string
