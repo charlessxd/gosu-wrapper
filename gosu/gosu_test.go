@@ -12,7 +12,7 @@ func TestSession_BuildCall(t *testing.T) {
 
 	v := url.Values{}
 	v.Add(EndpointAPIKey, s.Key)
-	v.Add(EndpointBeatmapsBeatmapID, "696969")
+	v.Add(EndpointParamBeatmapID, "696969")
 
 	result := s.buildCall(EndpointBeatmaps, v)
 	expected := EndpointAPI + EndpointBeatmaps + "b=696969&k=12345"
@@ -23,7 +23,7 @@ func TestSession_BuildCall(t *testing.T) {
 }
 
 func ExampleNewSession() {
-	s := NewSession(os.Getenv("API-KEY"))
+	s := NewSession(os.Getenv("API_KEY"))
 
 	fmt.Println(s)
 }

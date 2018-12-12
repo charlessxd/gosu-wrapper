@@ -19,10 +19,10 @@ func ExampleBeatmapCall() {
 }
 
 func ExampleBeatmap() {
-	session := NewSession(os.Getenv("API-KEY"))
+	session := NewSession(os.Getenv("API_KEY"))
 
 	call := BeatmapCall{
-		BeatmapID: "252002",
+		BeatmapID: "BEATMAP_ID	",
 	}
 
 	bm, _ := session.FetchBeatmap(call)

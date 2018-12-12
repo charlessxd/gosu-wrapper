@@ -3,10 +3,11 @@ package main
 import (
 	"../gosu"
 	"fmt"
+	"os"
 )
 
 func main() {
-	s := gosu.NewSession("18882e259698eeedc2e5ee310db1303380761d70")
+	s := gosu.NewSession(os.Getenv("API_KEY"))
 
 	call := gosu.BeatmapCall{
 		BeatmapID: "252002",

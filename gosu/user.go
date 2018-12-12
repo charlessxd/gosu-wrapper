@@ -114,16 +114,16 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointUserUserID, call.UserID)
+		v.Add(EndpointParamUserID, call.UserID)
 	default:
 		return User{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointUserMode, call.Mode)
+		v.Add(EndpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointUserType, call.Type)
+		v.Add(EndpointParamType, call.Type)
 	}
 
 	s.parseJSON(s.buildCall(EndpointUser, v), user)

@@ -78,19 +78,19 @@ func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointUserRecentUserID, call.UserID)
+		v.Add(EndpointParamUserID, call.UserID)
 	default:
 		return []UserRecent{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointUserRecentMode, call.Mode)
+		v.Add(EndpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointUserRecentType, call.Type)
+		v.Add(EndpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointUserRecentLimit, call.Limit)
+		v.Add(EndpointParamLimit, call.Limit)
 	}
 
 	s.parseJSON(s.buildCall(EndpointUserRecent, v), userrecent)

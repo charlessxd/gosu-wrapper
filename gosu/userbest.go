@@ -81,19 +81,19 @@ func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointUserBestUserID, call.UserID)
+		v.Add(EndpointParamUserID, call.UserID)
 	default:
 		return []UserBest{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointUserBestMode, call.Mode)
+		v.Add(EndpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointUserBestType, call.Type)
+		v.Add(EndpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointUserBestLimit, call.Limit)
+		v.Add(EndpointParamLimit, call.Limit)
 	}
 
 	s.parseJSON(s.buildCall(EndpointUserBest, v), userbest)

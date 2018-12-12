@@ -123,7 +123,7 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 
 	switch {
 	case call.MatchID != "":
-		v.Add(EndpointMatchID, call.MatchID)
+		v.Add(EndpointParamMatchID, call.MatchID)
 	default:
 		return Match{}, errors.New("no identifying param given (MatchID)")
 	}

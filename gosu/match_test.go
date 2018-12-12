@@ -8,17 +8,17 @@ import (
 func ExampleMatchCall() {
 	mc := MatchCall{
 		// Required:
-		MatchID: "1936471",
+		MatchID: "MATCH_ID",
 	}
 
 	fmt.Println(mc)
 }
 
 func ExampleMatch() {
-	session := NewSession(os.Getenv("API-KEY"))
+	session := NewSession(os.Getenv("API_KEY"))
 
 	call := MatchCall{
-		MatchID: "1936471",
+		MatchID: "MATCH_ID",
 	}
 
 	match, _ := session.FetchMatch(call)

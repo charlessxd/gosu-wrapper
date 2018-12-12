@@ -94,25 +94,25 @@ func (s *Session) FetchScores(call ScoreCall) ([]Scores, error) {
 
 	switch {
 	case call.BeatmapID != "":
-		v.Add(EndpointScoresBeatmapID, call.BeatmapID)
+		v.Add(EndpointParamBeatmapID, call.BeatmapID)
 	default:
 		return []Scores{}, errors.New("no identifying parameter given (BeatmapID)")
 	}
 
 	if call.UserID != "" {
-		v.Add(EndpointScoresUserID, call.UserID)
+		v.Add(EndpointParamUserID, call.UserID)
 	}
 	if call.Mode != "" {
-		v.Add(EndpointScoresMode, call.Mode)
+		v.Add(EndpointParamMode, call.Mode)
 	}
 	if call.Mods != "" {
-		v.Add(EndpointScoresMods, call.Mods)
+		v.Add(EndpointParamMods, call.Mods)
 	}
 	if call.Type != "" {
-		v.Add(EndpointScoresType, call.Type)
+		v.Add(EndpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointScoresLimit, call.Limit)
+		v.Add(EndpointParamLimit, call.Limit)
 	}
 
 	s.parseJSON(s.buildCall(EndpointScores, v), scores)

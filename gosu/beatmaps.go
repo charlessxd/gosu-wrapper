@@ -43,27 +43,27 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 
 	switch {
 	case call.BeatmapSetID != "":
-		v.Add(EndpointBeatmapsBeatmapSetID, call.BeatmapSetID)
+		v.Add(EndpointParamBeatmapSetID, call.BeatmapSetID)
 	case call.Since != "":
-		v.Add(EndpointBeatmapsSince, call.Since)
+		v.Add(EndpointParamSince, call.Since)
 	default:
 		return *beatmaps, errors.New("no identifying param given (Since, BeatmapSetID)")
 	}
 
 	if call.UserID != "" {
-		v.Add(EndpointBeatmapsUserID, call.UserID)
+		v.Add(EndpointParamUserID, call.UserID)
 	}
 	if call.Mode != "" {
-		v.Add(EndpointBeatmapsMode, call.Mode)
+		v.Add(EndpointParamMode, call.Mode)
 	}
 	if call.Converted != "" {
-		v.Add(EndpointBeatmapsConverted, call.Converted)
+		v.Add(EndpointParamConverted, call.Converted)
 	}
 	if call.Limit != "" && call.BeatmapSetID != "" {
-		v.Add(EndpointBeatmapsLimit, call.Limit)
+		v.Add(EndpointParamLimit, call.Limit)
 	}
 	if call.Type != "" {
-		v.Add(EndpointBeatmapsType, call.Type)
+		v.Add(EndpointParamType, call.Type)
 	}
 
 	s.parseJSON(s.buildCall(EndpointBeatmaps, v), beatmaps)
