@@ -1,27 +1,27 @@
 package gosu
 
-// Endpoint Constants
+// endpoint Constants
 const (
-	EndpointOsu    = "https://osu.ppy.sh/"
-	EndpointAPI    = EndpointOsu + "api/"
-	EndpointAPIKey = "k"
+	endpointOsu    = "https://osu.ppy.sh/"
+	endpointAPI    = endpointOsu + "api/"
+	endpointAPIKey = "k"
 
-	EndpointBeatmaps   = "get_beatmaps?"
-	EndpointUser       = "get_user?"
-	EndpointScores     = "get_scores?"
-	EndpointUserBest   = "get_user_best?"
-	EndpointUserRecent = "get_user_recent?"
-	EndpointMatch      = "get_match?"
+	endpointBeatmaps   = "get_beatmaps?"
+	endpointUser       = "get_user?"
+	endpointScores     = "get_scores?"
+	endpointUserBest   = "get_user_best?"
+	endpointUserRecent = "get_user_recent?"
+	endpointMatch      = "get_match?"
 
-	EndpointParamSince        = "since"
-	EndpointParamBeatmapSetID = "s"
-	EndpointParamBeatmapID    = "b"
-	EndpointParamUserID       = "u"
-	EndpointParamMode         = "m"
-	EndpointParamType         = "type"
-	EndpointParamConverted    = "a"
-	EndpointParamHash         = "h"
-	EndpointParamLimit        = "limit"
-	EndpointParamMods         = "mods"
-	EndpointParamMatchID      = "mp"
+	endpointParamSince        = "since"
+	endpointParamBeatmapSetID = "s"
+	endpointParamBeatmapID    = "b"
+	endpointParamUserID       = "u"
+	endpointParamMode         = "m"
+	endpointParamType         = "type"
+	endpointParamConverted    = "a"
+	endpointParamHash         = "h"
+	endpointParamLimit        = "limit"
+	endpointParamMods         = "mods"
+	endpointParamMatchID      = "mp"
 )

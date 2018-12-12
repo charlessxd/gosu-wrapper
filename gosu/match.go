@@ -119,16 +119,16 @@ type MatchScore struct {
 func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 	match := new([]Match)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.MatchID != "":
-		v.Add(EndpointParamMatchID, call.MatchID)
+		v.Add(endpointParamMatchID, call.MatchID)
 	default:
 		return Match{}, errors.New("no identifying param given (MatchID)")
 	}
 
-	s.parseJSON(s.buildCall(EndpointMatch, v), match)
+	s.parseJSON(s.buildCall(endpointMatch, v), match)
 
 	if len(*match) == 0 {
 		return Match{}, errors.New("match not found")

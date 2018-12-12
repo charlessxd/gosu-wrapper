@@ -39,34 +39,34 @@ type BeatmapsCall struct {
 func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 	beatmaps := new([]Beatmap)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.BeatmapSetID != "":
-		v.Add(EndpointParamBeatmapSetID, call.BeatmapSetID)
+		v.Add(endpointParamBeatmapSetID, call.BeatmapSetID)
 	case call.Since != "":
-		v.Add(EndpointParamSince, call.Since)
+		v.Add(endpointParamSince, call.Since)
 	default:
 		return *beatmaps, errors.New("no identifying param given (Since, BeatmapSetID)")
 	}
 
 	if call.UserID != "" {
-		v.Add(EndpointParamUserID, call.UserID)
+		v.Add(endpointParamUserID, call.UserID)
 	}
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Converted != "" {
-		v.Add(EndpointParamConverted, call.Converted)
+		v.Add(endpointParamConverted, call.Converted)
 	}
 	if call.Limit != "" && call.BeatmapSetID != "" {
-		v.Add(EndpointParamLimit, call.Limit)
+		v.Add(endpointParamLimit, call.Limit)
 	}
 	if call.Type != "" {
-		v.Add(EndpointParamType, call.Type)
+		v.Add(endpointParamType, call.Type)
 	}
 
-	s.parseJSON(s.buildCall(EndpointBeatmaps, v), beatmaps)
+	s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmaps)
 
 	if len(*beatmaps) == 0 {
 		return *beatmaps, errors.New("no beatmaps found")

@@ -14,10 +14,10 @@ import (
 // Session holds the API key and rate limiter.
 type Session struct {
 	// Osu API Key
-	Key string
+	key string
 
 	// Rate limit
-	Limiter RateLimit
+	limiter RateLimit
 
 	// Listeners
 	listeners map[string][]chan string
@@ -30,8 +30,8 @@ func NewSession(APIKey string) (session Session) {
 	}
 
 	session = Session{
-		Key:       APIKey,
-		Limiter:   NewRateLimit(),
+		key:       APIKey,
+		limiter:   NewRateLimit(),
 		listeners: nil,
 	}
 
@@ -75,13 +75,13 @@ func (s *Session) Emit(e string, response string) {
 
 // Builds an API Call to osu API v1
 func (s *Session) buildCall(endpoint string, v url.Values) string {
-	return EndpointAPI + endpoint + v.Encode()
+	return endpointAPI + endpoint + v.Encode()
 }
 
 // ParseJSON parses received JSON from url into a target interface
 func (s *Session) parseJSON(url string, target interface{}) error {
-	if !s.Limiter.CanRequest {
-		return errors.New("ratelimit exceded (Limit: " + strconv.Itoa(s.Limiter.MaxRequests) + " requests.)")
+	if !s.limiter.CanRequest {
+		return errors.New("ratelimit exceded (Limit: " + strconv.Itoa(s.limiter.MaxRequests) + " requests.)")
 	}
 
 	var myClient = &http.Client{Timeout: 10 * time.Second}
@@ -95,7 +95,7 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	buf.ReadFrom(r.Body)
 
 	json.Unmarshal([]byte(buf.String()), &target)
-	s.Limiter.iterate()
+	s.limiter.iterate()
 
 	return err
 

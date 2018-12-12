@@ -117,26 +117,26 @@ type Beatmap struct {
 func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	beatmap := new([]Beatmap)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.BeatmapID != "":
-		v.Add(EndpointParamBeatmapID, call.BeatmapID)
+		v.Add(endpointParamBeatmapID, call.BeatmapID)
 	default:
 		return Beatmap{}, errors.New("no identifying param given (BeatmapID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Converted != "" {
-		v.Add(EndpointParamConverted, call.Converted)
+		v.Add(endpointParamConverted, call.Converted)
 	}
 	if call.Hash != "" {
-		v.Add(EndpointParamHash, call.Hash)
+		v.Add(endpointParamHash, call.Hash)
 	}
 
-	s.parseJSON(s.buildCall(EndpointBeatmaps, v), beatmap)
+	s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmap)
 
 	if len(*beatmap) == 0 {
 		return Beatmap{}, errors.New("no beatmaps found")

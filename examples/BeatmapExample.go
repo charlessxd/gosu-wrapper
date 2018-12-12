@@ -10,7 +10,7 @@ func main() {
 	s := gosu.NewSession(os.Getenv("API_KEY"))
 
 	call := gosu.BeatmapCall{
-		BeatmapID: "252002",
+		BeatmapID: os.Getenv("BEATMAP_ID"),
 	}
 
 	beatmap, _ := s.FetchBeatmap(call)

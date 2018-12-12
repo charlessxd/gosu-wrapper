@@ -74,26 +74,26 @@ type UserRecent struct {
 func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 	userrecent := new([]UserRecent)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointParamUserID, call.UserID)
+		v.Add(endpointParamUserID, call.UserID)
 	default:
 		return []UserRecent{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointParamType, call.Type)
+		v.Add(endpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointParamLimit, call.Limit)
+		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(EndpointUserRecent, v), userrecent)
+	s.parseJSON(s.buildCall(endpointUserRecent, v), userrecent)
 
 	if len(*userrecent) == 0 {
 		return *userrecent, errors.New("user not found")

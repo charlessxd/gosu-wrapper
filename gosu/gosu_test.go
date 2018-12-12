@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-func TestSession_BuildCall(t *testing.T) {
+func TestSession_buildCall(t *testing.T) {
 	s := NewSession("12345")
 
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
-	v.Add(EndpointParamBeatmapID, "696969")
+	v.Add(endpointAPIKey, s.key)
+	v.Add(endpointParamBeatmapID, "696969")
 
-	result := s.buildCall(EndpointBeatmaps, v)
-	expected := EndpointAPI + EndpointBeatmaps + "b=696969&k=12345"
+	result := s.buildCall(endpointBeatmaps, v)
+	expected := endpointAPI + endpointBeatmaps + "b=696969&k=12345"
 
 	if result != expected {
 		t.Fatal("Expected \"" + expected + "\" but got \"" + result + "\".")

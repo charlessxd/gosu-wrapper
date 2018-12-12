@@ -77,26 +77,26 @@ type UserBest struct {
 func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 	userbest := new([]UserBest)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointParamUserID, call.UserID)
+		v.Add(endpointParamUserID, call.UserID)
 	default:
 		return []UserBest{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointParamType, call.Type)
+		v.Add(endpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointParamLimit, call.Limit)
+		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(EndpointUserBest, v), userbest)
+	s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
 
 	if len(*userbest) == 0 {
 		return *userbest, errors.New("user not found")

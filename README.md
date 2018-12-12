@@ -42,8 +42,11 @@ fmt.Println(beatmap)
 ## Documentation
 All exported variables and functions have been documented:
  *  [![GoDoc](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu?status.svg)](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu) 
- 
+
 ## To do
  * Change type variables & export status
  * Improved error checking
  * Examples
+
+## Links
+https://flaviocopes.com/golang-event-listeners/

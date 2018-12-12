@@ -110,23 +110,23 @@ type UserEvent struct {
 func (s *Session) FetchUser(call UserCall) (User, error) {
 	user := new([]User)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.UserID != "":
-		v.Add(EndpointParamUserID, call.UserID)
+		v.Add(endpointParamUserID, call.UserID)
 	default:
 		return User{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Type != "" {
-		v.Add(EndpointParamType, call.Type)
+		v.Add(endpointParamType, call.Type)
 	}
 
-	s.parseJSON(s.buildCall(EndpointUser, v), user)
+	s.parseJSON(s.buildCall(endpointUser, v), user)
 
 	if len(*user) == 0 {
 		return User{}, errors.New("user not found")

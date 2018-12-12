@@ -90,32 +90,32 @@ type Score struct {
 func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
 	scores := new([]Score)
 	v := url.Values{}
-	v.Add(EndpointAPIKey, s.Key)
+	v.Add(endpointAPIKey, s.key)
 
 	switch {
 	case call.BeatmapID != "":
-		v.Add(EndpointParamBeatmapID, call.BeatmapID)
+		v.Add(endpointParamBeatmapID, call.BeatmapID)
 	default:
 		return []Score{}, errors.New("no identifying parameter given (BeatmapID)")
 	}
 
 	if call.UserID != "" {
-		v.Add(EndpointParamUserID, call.UserID)
+		v.Add(endpointParamUserID, call.UserID)
 	}
 	if call.Mode != "" {
-		v.Add(EndpointParamMode, call.Mode)
+		v.Add(endpointParamMode, call.Mode)
 	}
 	if call.Mods != "" {
-		v.Add(EndpointParamMods, call.Mods)
+		v.Add(endpointParamMods, call.Mods)
 	}
 	if call.Type != "" {
-		v.Add(EndpointParamType, call.Type)
+		v.Add(endpointParamType, call.Type)
 	}
 	if call.Limit != "" {
-		v.Add(EndpointParamLimit, call.Limit)
+		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(EndpointScores, v), scores)
+	s.parseJSON(s.buildCall(endpointScores, v), scores)
 
 	if len(*scores) == 0 {
 		return *scores, errors.New("no scores found")
