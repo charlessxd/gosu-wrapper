@@ -18,6 +18,9 @@ type Session struct {
 
 	// Rate limit
 	Limiter RateLimit
+
+	// Listeners
+	listeners map[string][]chan string
 }
 
 // NewSession creates a Session using the user's APIKey.
@@ -27,11 +30,47 @@ func NewSession(APIKey string) (session Session) {
 	}
 
 	session = Session{
-		Key:     APIKey,
-		Limiter: NewRateLimit(),
+		Key:       APIKey,
+		Limiter:   NewRateLimit(),
+		listeners: nil,
 	}
 
 	return session
+}
+
+// AddListener adds an event listener to the Session struct instance
+func (s *Session) AddListener(e string, ch chan string) {
+	if s.listeners == nil {
+		s.listeners = make(map[string][]chan string)
+	}
+	if _, ok := s.listeners[e]; ok {
+		s.listeners[e] = append(s.listeners[e], ch)
+	} else {
+		s.listeners[e] = []chan string{ch}
+	}
+}
+
+// RemoveListener removes an event listener from the Session struct instance
+func (s *Session) RemoveListener(e string, ch chan string) {
+	if _, ok := s.listeners[e]; ok {
+		for i := range s.listeners[e] {
+			if s.listeners[e][i] == ch {
+				s.listeners[e] = append(s.listeners[e][:i], s.listeners[e][i+1:]...)
+				break
+			}
+		}
+	}
+}
+
+// Emit emits an event on the Session struct instance
+func (s *Session) Emit(e string, response string) {
+	if _, ok := s.listeners[e]; ok {
+		for _, handler := range s.listeners[e] {
+			go func(handler chan string) {
+				handler <- response
+			}(handler)
+		}
+	}
 }
 
 // Builds an API Call to osu API v1
