@@ -36,31 +36,31 @@ type Score struct {
 	ScoreID string `json:"score_id"`
 
 	// The score achieved.
-	Score string `json:"score"`
+	Score int64 `json:"score,string"`
 
 	// The user name of the user who submitted the score.
 	Username string `json:"username"`
 
 	// The number of 300s.
-	Count300 string `json:"count300"`
+	Count300 int `json:"count300,string"`
 
 	// The number of 100s.
-	Count100 string `json:"count100"`
+	Count100 int `json:"count100,string"`
 
 	// The number of 50s.
-	Count50 string `json:"count50"`
+	Count50 int `json:"count50,string"`
 
 	// The number of misses.
-	CountMiss string `json:"countmiss"`
+	CountMiss int `json:"countmiss,string"`
 
 	// The highest combo the user reached.
-	MaxCombo string `json:"maxcombo"`
+	MaxCombo int `json:"maxcombo,string"`
 
 	// The number of katu.
-	CountKatu string `json:"countkatu"`
+	CountKatu int `json:"countkatu,string"`
 
 	// The nubmer of geki.
-	CountGeki string `json:"countgeki"`
+	CountGeki int `json:"countgeki,string"`
 
 	// Whether the user achieved the maximum combo of the beatmap.
 	// 1 = max combo achieved, 0 = max combo not achieved.
@@ -79,7 +79,7 @@ type Score struct {
 	Rank string `json:"rank"`
 
 	// PP rewarded for achieving the play, as a float value.
-	PP string `json:"pp"`
+	PP float64 `json:"pp,string"`
 
 	// Whether osu official servers store the replay.
 	// 1 = is stored, 0 = is not stored.

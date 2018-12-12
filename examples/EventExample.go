@@ -1,39 +1,21 @@
-package gosu
+package main
 
 import (
+	"../gosu"
 	"fmt"
-	"net/url"
 	"os"
 	"strconv"
-	"testing"
 	"time"
 )
 
-func TestSession_buildCall(t *testing.T) {
-	s := NewSession("12345")
+func main() {
+	s := gosu.NewSession(os.Getenv("API_KEY"))
 
-	v := url.Values{}
-	v.Add(endpointAPIKey, s.key)
-	v.Add(endpointParamBeatmapID, "696969")
-
-	result := s.buildCall(endpointBeatmaps, v)
-	expected := endpointAPI + endpointBeatmaps + "b=696969&k=12345"
-
-	if result != expected {
-		t.Fatal("Expected \"" + expected + "\" but got \"" + result + "\".")
-	}
-}
-
-func ExampleSession_Emit() {
-	s := NewSession(os.Getenv("API_KEY"))
-
-	c := UserCall{
+	c := gosu.UserCall{
 		UserID: os.Getenv("USER_ID"),
 	}
 
 	u, _ := s.FetchUser(c)
-
-	fmt.Println(u.Username)
 
 	event := make(chan string)
 

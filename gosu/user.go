@@ -29,60 +29,60 @@ type User struct {
 	Username string `json:"username"`
 
 	// The number of 300s the user has gotten for all ranked, approved, and loved beatmaps played.
-	Count300 string `json:"count300"`
+	Count300 int `json:"count300,string"`
 
 	// The number of 100s the user has gotten for all ranked, approved, and loved beatmaps played.
-	Count100 string `json:"count100"`
+	Count100 int `json:"count100,string"`
 
 	// The number of 50s the user has gotten for all ranked, approved, and loved beatmaps played.
-	Count50 string `json:"count50"`
+	Count50 int `json:"count50,string"`
 
 	// The amount of plays the user has on ranked, approved, and loved beatmaps.
-	PlayCount string `json:"playcount"`
+	PlayCount int `json:"playcount,string"`
 
 	// The total of the best individual score for every ranked, approved, and loved beatmap the user has played.
-	RankedScore string `json:"ranked_score"`
+	RankedScore int64 `json:"ranked_score,string"`
 
 	// The total score of every beatmap the user has played.
-	TotalScore string `json:"total_score"`
+	TotalScore int64 `json:"total_score,string"`
 
 	// The global ranking of the user in terms of PP.
 	// 1 having the highest amount of PP.
-	PPRank string `json:"pp_rank"`
+	PPRank float64 `json:"pp_rank,string"`
 
 	// The level of the user.
-	Level string `json:"level"`
+	Level float64 `json:"level,string"`
 
 	// The amount of PP the user has as a float value.
-	PPRaw string `json:"raw"`
+	PPRaw float64 `json:"pp_raw,string"`
 
 	// The accuracy of the user as a percentage.
-	Accuracy string `json:"accuracy"`
+	Accuracy float64 `json:"accuracy,string"`
 
 	// The total number of non-hidden SS ranks the user has achieved on ranked, approved, and loved beatmaps.
-	CountRankSS string `json:"count_rank_ss"`
+	CountRankSS int `json:"count_rank_ss,string"`
 
 	// The total number of hidden SS ranks the user has achieved on ranked, approved, and loved beatmaps.
-	CountRankSSH string `json:"count_rank_ssh"`
+	CountRankSSH int `json:"count_rank_ssh,string"`
 
 	// The total number of non-hidden S ranks the user has achieved on ranked, approved, and loved beatmaps.
-	CountRankS string `json:"count_rank_s"`
+	CountRankS int `json:"count_rank_s,string"`
 
 	// The total number of hidden S ranks the user has achieved on ranked, approved, and loved beatmaps.
-	CountRankSH string `json:"count_rank_sh"`
+	CountRankSH int `json:"count_rank_sh,string"`
 
 	// The total number of A ranks the user has achieved on ranked, approved, and loved beatmaps.
-	CountRankA string `json:"count_rank_a"`
+	CountRankA int `json:"count_rank_a,string"`
 
 	// The country the user created their account from.
 	// Uses the ISO3166-1 alpha-2 country code naming. See this for more information: http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2/)
 	Country string `json:"country"`
 
 	// The total number of seconds the user has played.
-	TotalSecondsPlayed string `json:"total_seconds_played"`
+	TotalSecondsPlayed int64 `json:"total_seconds_played,string"`
 
 	// The PP ranking of the user within their country.
-	PPCountryRank string `json:"pp_country_rank"`
+	PPCountryRank int `json:"pp_country_rank,string"`
 
 	// The events of the user.
 	Events []UserEvent `json:"events"`
@@ -103,7 +103,7 @@ type UserEvent struct {
 	Date string `json:"date"`
 
 	// How epic the event is, between 1 and 32.
-	EpicFactor string `json:"epicfactor"`
+	EpicFactor int `json:"epicfactor,string"`
 }
 
 // FetchUser returns metadata about a user.

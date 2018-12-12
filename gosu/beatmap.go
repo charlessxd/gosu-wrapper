@@ -26,7 +26,7 @@ type BeatmapCall struct {
 type Beatmap struct {
 	// The status of the beatmap's ranking.
 	// 4 = loved, 3 = qualified, 2 = approved, 1 = ranked, 0 = pending, -1 = WIP, -2 = graveyard
-	Approved string `json:"approved"`
+	Approved int `json:"approved,string"`
 
 	// Date the beatmap was ranked, in UTC.
 	ApprovedDate string `json:"approved_date"`
@@ -44,7 +44,7 @@ type Beatmap struct {
 	BeatmapSetID string `json:"beatmapset_id"`
 
 	// The BPM of the beatmap.
-	BPM string `json:"bpm"`
+	BPM int `json:"bpm,string"`
 
 	// The creator of the beatmap.
 	Creator string `json:"creator"`
@@ -53,39 +53,39 @@ type Beatmap struct {
 	CreatorID string `json:"creator_id"`
 
 	// The star rating of the beatmap.
-	DifficultyRating string `json:"difficultyrating"`
+	DifficultyRating float64 `json:"difficultyrating,string"`
 
 	// The circle size used in the beatmap.
-	CircleSize string `json:"diff_size"`
+	CircleSize float64 `json:"diff_size,string"`
 
 	// The overall difficulty used in the beatmap.
-	OverallDifficulty string `json:"diff_overall"`
+	OverallDifficulty float64 `json:"diff_overall,string"`
 
 	// The approach rate used in the beatmap.
-	ApproachRate string `json:"diff_approach"`
+	ApproachRate float64 `json:"diff_approach,string"`
 
 	// The health drain used in the beatmap.
-	HealthDrain string `json:"diff_drain"`
+	HealthDrain float64 `json:"diff_drain,string"`
 
 	// The number of seconds from the first note to the last note, not including breaks.
-	HitLength string `json:"hit_length"`
+	HitLength int `json:"hit_length,string"`
 
 	// The source of the song used in the beatmap.
 	Source string `json:"source"`
 
 	// ID of the genre of the song used in the beatmap.
 	// 0 = any, 1 = unspecified, 2 = video game, 3 = anime, 4 = rock, 5 = pop, 6 = other, 7 = novelty, 9 = hip hop, 10 = electronic (note that there's no 8)
-	GenreID string `json:"genre_id"`
+	GenreID int `json:"genre_id,string"`
 
 	// ID of the language used in the song used in the beatmap.
 	// 0 = any, 1 = other, 2 = english, 3 = japanese, 4 = chinese, 5 = instrumental, 6 = korean, 7 = french, 8 = german, 9 = swedish, 10 = spanish, 11 = italian
-	LanguageID string `json:"language_id"`
+	LanguageID int `json:"language_id,string"`
 
 	// The name of the song used in the beatmap.
 	Title string `json:"title"`
 
 	// The number of seconds from the first note to the last note, including breaks.
-	TotalLength string `json:"total_length"`
+	TotalLength int `json:"total_length,string"`
 
 	// The name of the beatmap's difficulty.
 	Version string `json:"version"`
@@ -95,22 +95,22 @@ type Beatmap struct {
 
 	// The game mode the beatmap utilizes.
 	// 0 = standard, 1 = taiko, 2 = ctb, 3 = mania
-	Mode string `json:"mode"`
+	Mode int `json:"mode,string"`
 
 	// The tags of the beatmap separated by spaces.
 	Tags string `json:"tags"`
 
 	// The number of times the beatmap has been favored.
-	FavouriteCount string `json:"favourite_count"`
+	FavouriteCount int `json:"favourite_count,string"`
 
 	// The number of times the beatmap has been played.
-	PlayCount string `json:"playcount"`
+	PlayCount int `json:"playcount,string"`
 
 	// The number of times the beatmap has been passed, completed.
-	PassCount string `json:"passcount"`
+	PassCount int `json:"passcount,string"`
 
 	// The maximum combo a user can reach playing the beatmap.
-	MaxCombo string `json:"max_combo"`
+	MaxCombo int `json:"max_combo,string"`
 }
 
 // FetchBeatmap returns metadata about one beatmap

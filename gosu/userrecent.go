@@ -30,28 +30,28 @@ type UserRecent struct {
 	BeatmapID string `json:"beatmap_id"`
 
 	// The score achieved on the beatmap.
-	Score string `json:"score"`
+	Score int64 `json:"score,string"`
 
 	// The highest combo the user reached.
-	MaxCombo string `json:"maxcombo"`
+	MaxCombo int `json:"maxcombo,string"`
 
 	// The number of 300s.
-	Count300 string `json:"count300"`
+	Count300 int `json:"count300,string"`
 
 	// The number of 100s.
-	Count100 string `json:"count100"`
+	Count100 int `json:"count100,string"`
 
 	// The number of 50s.
-	Count50 string `json:"count50"`
+	Count50 int `json:"count50,string"`
 
 	// The number of misses.
-	CountMiss string `json:"countmiss"`
+	CountMiss int `json:"countmiss,string"`
 
 	// The number of katu.
-	CountKatu string `json:"countkatu"`
+	CountKatu int `json:"countkatu,string"`
 
 	// The number of geki.
-	CountGeki string `json:"countgeki"`
+	CountGeki int `json:"countgeki,string"`
 
 	// Whether the user achieved the maximum combo of the beatmap.
 	// 1 = max combo achieved, 0 = max combo not achieved.
