@@ -31,7 +31,7 @@ Examples can be found in the [examples directory](https://github.com/charlessxd/
 s := gosu.NewSession(os.Getenv("API_KEY"))
 
 call := gosu.BeatmapCall{
-	BeatmapID: "252002",
+	BeatmapID: os.Getenv("252002"),
 }
 
 beatmap, _ := s.FetchBeatmap(call)
