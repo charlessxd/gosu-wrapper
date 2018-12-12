@@ -25,7 +25,7 @@ type UserRecentCall struct {
 }
 
 // UserRecent stores data for all recent plays an individual osu user has submitted.
-type UserRecent []struct {
+type UserRecent struct {
 	// ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 

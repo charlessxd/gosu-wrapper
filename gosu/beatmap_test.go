@@ -5,27 +5,14 @@ import (
 	"os"
 )
 
-func ExampleBeatmapCall() {
-	bm := BeatmapCall{
-		// Required:
-		BeatmapID: "<ID of Beatmap>",
-
-		// Optional:
-		Mode:      "<Game-mode of Beatmap>",
-		Converted: "<Converted>",
-	}
-
-	fmt.Println(bm)
-}
-
 func ExampleBeatmap() {
 	session := NewSession(os.Getenv("API_KEY"))
 
-	call := BeatmapCall{
-		BeatmapID: "BEATMAP_ID	",
+	c := BeatmapCall{
+		BeatmapID: os.Getenv("BEATMAP_ID"),
 	}
 
-	bm, _ := session.FetchBeatmap(call)
+	bm, _ := session.FetchBeatmap(c)
 
 	fmt.Println(bm.BeatmapID)
 }

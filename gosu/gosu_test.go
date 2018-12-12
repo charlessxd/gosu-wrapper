@@ -1,9 +1,7 @@
 package gosu
 
 import (
-	"fmt"
 	"net/url"
-	"os"
 	"testing"
 )
 
@@ -20,10 +18,4 @@ func TestSession_BuildCall(t *testing.T) {
 	if result != expected {
 		t.Fatal("Expected \"" + expected + "\" but got \"" + result + "\".")
 	}
-}
-
-func ExampleNewSession() {
-	s := NewSession(os.Getenv("API_KEY"))
-
-	fmt.Println(s)
 }

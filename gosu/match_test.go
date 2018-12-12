@@ -5,23 +5,14 @@ import (
 	"os"
 )
 
-func ExampleMatchCall() {
-	mc := MatchCall{
-		// Required:
-		MatchID: "MATCH_ID",
-	}
-
-	fmt.Println(mc)
-}
-
 func ExampleMatch() {
 	session := NewSession(os.Getenv("API_KEY"))
 
-	call := MatchCall{
-		MatchID: "MATCH_ID",
+	c := MatchCall{
+		MatchID: os.Getenv("MATCH_ID"),
 	}
 
-	match, _ := session.FetchMatch(call)
+	match, _ := session.FetchMatch(c)
 
 	fmt.Println(match.Details.MatchID)
 }
