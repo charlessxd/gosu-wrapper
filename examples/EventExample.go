@@ -13,11 +13,9 @@ func main() {
 
 	c := gosu.UserCall{
 		UserID: os.Getenv("USER_ID"),
-		Mode:   "3",
 	}
 
 	u, err := s.FetchUser(c)
-	fmt.Println(u.PPRaw)
 
 	if err != nil {
 		fmt.Println(err.Error())
