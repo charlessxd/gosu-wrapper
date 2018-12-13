@@ -15,6 +15,10 @@ func main() {
 
 	beatmap, err := s.FetchBeatmap(call)
 
-
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	
 	fmt.Println(beatmap)
 }

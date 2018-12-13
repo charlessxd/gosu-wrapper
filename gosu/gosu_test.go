@@ -31,9 +31,12 @@ func ExampleSession_Emit() {
 		UserID: os.Getenv("USER_ID"),
 	}
 
-	u, _ := s.FetchUser(c)
+	u, err := s.FetchUser(c)
 
-	fmt.Println(u.Username)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
 
 	event := make(chan string)
 
@@ -51,7 +54,7 @@ func ExampleSession_Emit() {
 		init := u.PPRaw
 		for init == u.PPRaw {
 			if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
-				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw - u.PPRaw, 'G', -1, 64))
+				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw-u.PPRaw, 'G', -1, 64))
 				u, _ = s.FetchUser(c)
 			}
 			time.Sleep(1 * time.Second)
