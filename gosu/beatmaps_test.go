@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleBeatmaps() {
+func ExampleSession_FetchBeatmaps() {
 	session := NewSession(os.Getenv("API_KEY"))
 
 	c := BeatmapsCall{
@@ -15,6 +15,6 @@ func ExampleBeatmaps() {
 	bs, _ := session.FetchBeatmaps(c)
 
 	if len(bs) > 0 {
-		fmt.Println(bs[0].BeatmapID)
+		fmt.Println(bs[0])
 	}
 }

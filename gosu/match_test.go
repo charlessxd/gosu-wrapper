@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleMatch() {
+func ExampleSession_FetchMatch() {
 	session := NewSession(os.Getenv("API_KEY"))
 
 	c := MatchCall{

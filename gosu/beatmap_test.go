@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleBeatmap() {
+func ExampleSession_FetchBeatmap() {
 	session := NewSession(os.Getenv("API_KEY"))
 
 	c := BeatmapCall{

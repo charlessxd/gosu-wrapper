@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleUserBest() {
+func ExampleSession_FetchUserBest() {
 	s := NewSession(os.Getenv("API_KEY"))
 
 	c := UserBestCall{

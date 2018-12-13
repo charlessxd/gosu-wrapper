@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleScore() {
+func ExampleSession_FetchScores() {
 	session := NewSession(os.Getenv("API_KEY"))
 
 	c := ScoreCall{

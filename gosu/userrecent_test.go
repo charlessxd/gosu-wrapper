@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleUserRecent() {
+func ExampleSession_FetchUserRecent() {
 	s := NewSession(os.Getenv("API_KEY"))
 
 	c := UserRecentCall{
