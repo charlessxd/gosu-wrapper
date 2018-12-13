@@ -116,7 +116,7 @@ type UserEvent struct {
 
 // FetchUser returns metadata about a user.
 func (s *Session) FetchUser(call UserCall) (User, error) {
-	user := new([]User)
+	user := *new([]User)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -134,18 +134,19 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 		v.Add(endpointParamType, call.Type)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointUser, v), user)
+	err := s.parseJSON(s.buildCall(endpointUser, v), &user)
 
 	if err != nil {
 		return User{}, err
 	}
-	if len(*user) == 0 {
+	if len(user) == 0 {
 		return User{}, errors.New("user not found")
 	}
 
-	(*user)[0].apiURL = s.buildCall(endpointUser, v)
-	(*user)[0].session = s
-	return (*user)[0], nil
+	user[0].apiURL = s.buildCall(endpointUser, v)
+	user[0].session = s
+
+	return user[0], nil
 }
 
 func (u *User) Update() error {

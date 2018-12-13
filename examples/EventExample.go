@@ -13,9 +13,11 @@ func main() {
 
 	c := gosu.UserCall{
 		UserID: os.Getenv("USER_ID"),
+		Mode:   "3",
 	}
 
 	u, err := s.FetchUser(c)
+	fmt.Println(u.PPRaw)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -37,15 +39,15 @@ func main() {
 	go func() {
 		for {
 			// EVENT
+			time.Sleep(1 * time.Second)
 			if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
 				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw-u.PPRaw, 'G', -1, 64))
 				u = t
 			}
-			time.Sleep(1 * time.Second)
 		}
 	}()
 
-	for <-event == "" {
+	for {
 		time.Sleep(1 * time.Second)
 	}
 
