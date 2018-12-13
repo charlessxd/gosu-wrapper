@@ -85,11 +85,16 @@ type User struct {
 	PPCountryRank int `json:"pp_country_rank,string"`
 
 	// The events of the user.
-	Events []UserEvent `json:"events"`
+	Events []OsuEvent `json:"events"`
+
+	// API Call URL
+	apiURL string
+
+	session *Session
 }
 
 // UserEvent stores data for events related to an individual osu user.
-type UserEvent struct {
+type OsuEvent struct {
 	// The HTML for the event.
 	DisplayHTML string `json:"display_html"`
 
@@ -104,6 +109,9 @@ type UserEvent struct {
 
 	// How epic the event is, between 1 and 32.
 	EpicFactor int `json:"epicfactor,string"`
+}
+
+type UserEvent struct {
 }
 
 // FetchUser returns metadata about a user.
@@ -135,5 +143,26 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 		return User{}, errors.New("user not found")
 	}
 
+	(*user)[0].apiURL = s.buildCall(endpointUser, v)
+	(*user)[0].session = s
 	return (*user)[0], nil
+}
+
+func (u *User) Update() error {
+	user := *new([]User)
+
+	err := u.session.parseJSON(u.apiURL, &user)
+
+	if err != nil {
+		return err
+	}
+	if u.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(user) == 0 {
+		return errors.New("user not found")
+	}
+
+	*u = user[0]
+	return nil
 }

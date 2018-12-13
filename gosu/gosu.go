@@ -43,6 +43,7 @@ func (s *Session) AddListener(e string, ch chan string) {
 	if s.listeners == nil {
 		s.listeners = make(map[string][]chan string)
 	}
+
 	if _, ok := s.listeners[e]; ok {
 		s.listeners[e] = append(s.listeners[e], ch)
 	} else {

@@ -35,18 +35,19 @@ func main() {
 
 	// Event for when a user's PP changes
 	go func() {
-		init := u.PPRaw
-		for init == u.PPRaw {
+		for {
+			// EVENT
 			if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
 				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw-u.PPRaw, 'G', -1, 64))
-				u, _ = s.FetchUser(c)
+				u = t
 			}
 			time.Sleep(1 * time.Second)
 		}
 	}()
 
-	for {
+	for <-event == "" {
 		time.Sleep(1 * time.Second)
 	}
 
+	s.RemoveListener(u.UserID, event)
 }
