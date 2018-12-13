@@ -126,8 +126,11 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 		v.Add(endpointParamType, call.Type)
 	}
 
-	s.parseJSON(s.buildCall(endpointUser, v), user)
+	err := s.parseJSON(s.buildCall(endpointUser, v), user)
 
+	if err != nil {
+		return User{}, err
+	}
 	if len(*user) == 0 {
 		return User{}, errors.New("user not found")
 	}

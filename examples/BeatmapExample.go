@@ -13,7 +13,8 @@ func main() {
 		BeatmapID: os.Getenv("BEATMAP_ID"),
 	}
 
-	beatmap, _ := s.FetchBeatmap(call)
+	beatmap, err := s.FetchBeatmap(call)
+
 
 	fmt.Println(beatmap)
 }

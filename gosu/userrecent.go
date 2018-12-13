@@ -93,8 +93,11 @@ func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(endpointUserRecent, v), userrecent)
+	err := s.parseJSON(s.buildCall(endpointUserRecent, v), userrecent)
 
+	if err != nil {
+		return *userrecent, err
+	}
 	if len(*userrecent) == 0 {
 		return *userrecent, errors.New("user not found")
 	}

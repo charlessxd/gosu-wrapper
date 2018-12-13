@@ -115,8 +115,11 @@ func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(endpointScores, v), scores)
+	err := s.parseJSON(s.buildCall(endpointScores, v), scores)
 
+	if err != nil {
+		return *scores, err
+	}
 	if len(*scores) == 0 {
 		return *scores, errors.New("no scores found")
 	}

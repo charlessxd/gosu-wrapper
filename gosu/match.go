@@ -128,8 +128,11 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 		return Match{}, errors.New("no identifying param given (MatchID)")
 	}
 
-	s.parseJSON(s.buildCall(endpointMatch, v), match)
+	err := s.parseJSON(s.buildCall(endpointMatch, v), match)
 
+	if err != nil {
+		return Match{}, err
+	}
 	if len(*match) == 0 {
 		return Match{}, errors.New("match not found")
 	}

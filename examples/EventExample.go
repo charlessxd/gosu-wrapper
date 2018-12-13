@@ -15,32 +15,37 @@ func main() {
 		UserID: os.Getenv("USER_ID"),
 	}
 
-	u, _ := s.FetchUser(c)
+	u, err := s.FetchUser(c)
 
-	event := make(chan string)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
 
-	s.AddListener(u.UserID, event)
+		event := make(chan string)
 
-	// Outputs the event
-	go func() {
-		for {
-			fmt.Println(<-event)
-		}
-	}()
+		s.AddListener(u.UserID, event)
 
-	// Event for when a user's PP changes
-	go func() {
-		init := u.PPRaw
-		for init == u.PPRaw {
-			if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
-				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw - u.PPRaw, 'G', -1, 64))
-				u, _ = s.FetchUser(c)
+		// Outputs the event
+		go func() {
+			for {
+				fmt.Println(<-event)
 			}
+		}()
+
+		// Event for when a user's PP changes
+		go func() {
+			init := u.PPRaw
+			for init == u.PPRaw {
+				if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
+					s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw-u.PPRaw, 'G', -1, 64))
+					u, _ = s.FetchUser(c)
+				}
+				time.Sleep(1 * time.Second)
+			}
+		}()
+
+		for {
 			time.Sleep(1 * time.Second)
 		}
-	}()
-
-	for {
-		time.Sleep(1 * time.Second)
 	}
 }

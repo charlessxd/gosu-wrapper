@@ -66,8 +66,11 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 		v.Add(endpointParamType, call.Type)
 	}
 
-	s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmaps)
+	err := s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmaps)
 
+	if err != nil {
+		return *beatmaps, err
+	}
 	if len(*beatmaps) == 0 {
 		return *beatmaps, errors.New("no beatmaps found")
 	}

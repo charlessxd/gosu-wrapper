@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -95,6 +96,8 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	buf.ReadFrom(r.Body)
 
 	json.Unmarshal([]byte(buf.String()), &target)
+
+	fmt.Println(target)
 	s.limiter.iterate()
 
 	return err

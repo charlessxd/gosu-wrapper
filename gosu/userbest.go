@@ -96,8 +96,11 @@ func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
+	err := s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
 
+	if err != nil {
+		return *userbest, err
+	}
 	if len(*userbest) == 0 {
 		return *userbest, errors.New("user not found")
 	}
