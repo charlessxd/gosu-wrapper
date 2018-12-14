@@ -4,7 +4,6 @@ import (
 	"../gosu"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -24,7 +23,8 @@ func main() {
 
 	event := make(chan string)
 
-	s.AddListener(u.UserID, event)
+	//s.AddListener(u.UserID, event)
+	u.AddListener(gosu.PPGained, event)
 
 	// Outputs the event
 	go func() {
@@ -34,7 +34,7 @@ func main() {
 	}()
 
 	// Event for when a user's PP changes
-	go func() {
+	/*go func(handler gosu.UserHandler) {
 		for {
 			// EVENT
 			time.Sleep(1 * time.Second)
@@ -43,11 +43,13 @@ func main() {
 				u = t
 			}
 		}
-	}()
+	}(gosu.PPGained)*/
+
+
 
 	for {
 		time.Sleep(1 * time.Second)
 	}
 
-	s.RemoveListener(u.UserID, event)
+	//s.RemoveListener(u.UserID, event)
 }

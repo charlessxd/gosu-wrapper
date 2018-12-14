@@ -20,26 +20,39 @@ type Session struct {
 	limiter RateLimit
 
 	// Listeners
-	listeners map[string][]chan string
+	//listeners map[string][]chan string
+	listeners map[*User][]chan string
 }
 
 // NewSession creates a Session using the user's APIKey.
-func NewSession(APIKey string) (session Session) {
+func NewSession(APIKey string) (s Session) {
 	if APIKey == "" {
 		return
 	}
 
-	session = Session{
+	s = Session{
 		key:       APIKey,
 		limiter:   NewRateLimit(),
 		listeners: nil,
 	}
 
-	return session
+	// Listens for user events
+	go func() {
+		for {
+			for u := range s.listeners {
+				for _, check := range u.listeners {
+					updated, _ := s.FetchUser(UserCall{UserID:u.UserID})
+					check(&s, u, updated) // Checks if an event has occured
+				}
+			}
+		}
+	}()
+
+	return s
 }
 
 // AddListener adds an event listener to the Session struct instance
-func (s *Session) AddListener(e string, ch chan string) {
+/*func (s *Session) AddListener(e string, ch chan string) {
 	if s.listeners == nil {
 		s.listeners = make(map[string][]chan string)
 	}
@@ -49,10 +62,10 @@ func (s *Session) AddListener(e string, ch chan string) {
 	} else {
 		s.listeners[e] = []chan string{ch}
 	}
-}
+}*/
 
 // RemoveListener removes an event listener from the Session struct instance
-func (s *Session) RemoveListener(e string, ch chan string) {
+/*func (s *Session) RemoveListener(e string, ch chan string) {
 	if _, ok := s.listeners[e]; ok {
 		for i := range s.listeners[e] {
 			if s.listeners[e][i] == ch {
@@ -61,12 +74,12 @@ func (s *Session) RemoveListener(e string, ch chan string) {
 			}
 		}
 	}
-}
+}*/
 
 // Emit emits an event on the Session struct instance
-func (s *Session) Emit(e string, response string) {
-	if _, ok := s.listeners[e]; ok {
-		for _, handler := range s.listeners[e] {
+func (s *Session) Emit(e User, response string) {
+	if _, ok := s.listeners[&e]; ok {
+		for _, handler := range s.listeners[&e] {
 			go func(handler chan string) {
 				handler <- response
 			}(handler)

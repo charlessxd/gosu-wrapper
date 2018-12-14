@@ -59,7 +59,7 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) ([]Beatmap, error) {
 	if call.Converted != "" {
 		v.Add(endpointParamConverted, call.Converted)
 	}
-	if call.Limit != "" && call.BeatmapSetID != "" {
+	if call.Limit != "" {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 	if call.Type != "" {
