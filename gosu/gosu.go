@@ -114,3 +114,12 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	return err
 
 }
+
+func remove(s []int, i int) []int {
+	if len(s) >= 1 {
+		s[i] = s[len(s)-1]
+		return s[:len(s)-1]
+	} else {
+		return []int{}
+	}
+}

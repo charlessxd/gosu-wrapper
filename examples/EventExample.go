@@ -25,6 +25,7 @@ func main() {
 
 	//s.AddListener(u.UserID, event)
 	u.AddListener(gosu.PPGained, event)
+	u.AddListener(gosu.RankChange, event)
 
 	// Outputs the event
 	go func() {
@@ -32,20 +33,6 @@ func main() {
 			fmt.Println(<-event)
 		}
 	}()
-
-	// Event for when a user's PP changes
-	/*go func(handler gosu.UserHandler) {
-		for {
-			// EVENT
-			time.Sleep(1 * time.Second)
-			if t, _ := s.FetchUser(c); t.PPRaw != u.PPRaw {
-				s.Emit(u.UserID, strconv.FormatFloat(t.PPRaw-u.PPRaw, 'G', -1, 64))
-				u = t
-			}
-		}
-	}(gosu.PPGained)*/
-
-
 
 	for {
 		time.Sleep(1 * time.Second)

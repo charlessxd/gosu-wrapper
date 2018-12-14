@@ -48,7 +48,7 @@ type User struct {
 
 	// The global ranking of the user in terms of PP.
 	// 1 having the highest amount of PP.
-	PPRank float64 `json:"pp_rank,string"`
+	PPRank int64 `json:"pp_rank,string"`
 
 	// The level of the user.
 	Level float64 `json:"level,string"`
@@ -170,14 +170,30 @@ func (u *User) Update() error {
 	return nil
 }
 
-func (u *User) AddListener(l UserHandler, ch chan string) {
+func (u *User) AddListener(h UserHandler, ch chan string) {
 	if u.listeners == nil {
 		u.listeners = []UserHandler{}
 	}
 	if _, ok := u.session.listeners[u]; !ok {
 		u.session.listeners[u] = []chan string{ch}
-		u.listeners = append(u.listeners, l)
+		u.listeners = append(u.listeners, h)
 	} else {
-		u.listeners = append(u.listeners, l)
+		u.listeners = append(u.listeners, h)
 	}
+}
+
+func (u *User) RemoveListener(l UserHandler, ch chan string) {
+	for i := 0; i < len(u.listeners); i++ {
+		if u.listeners[i] == l {
+			
+		}
+	}
+	/*if _, ok := s.listeners[u]; ok {
+		for i := range s.listeners[e] {
+			if s.listeners[e][i] == ch {
+				s.listeners[e] = append(s.listeners[e][:i], s.listeners[e][i+1:]...)
+				break
+			}
+		}
+	}*/
 }
