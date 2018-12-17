@@ -1,6 +1,7 @@
 package gosu
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -23,6 +24,17 @@ func NewRateLimit() RateLimit {
 		TimeInterval:    60.0,
 	}
 
+	// Updates the rate limit every TimeInterval seconds.
+	go func(l *RateLimit) {
+		for {
+			d, _ := time.ParseDuration(fmt.Sprintf("%fs", l.TimeInterval))
+			time.Sleep(time.Second * d)
+
+			l.CanRequest = true
+			l.CurrentRequests = 0
+		}
+	}(&limiter)
+
 	return limiter
 }
 
@@ -37,20 +49,9 @@ func (s *Session) SetRateLimit(max int, seconds float64) {
 	}
 }
 
-// Update updates the RateLimit's CanRequest and CurrentRequest if
-// TimeInterval seconds have passed since the first request.
-// First request being the request sent when CurrentRequests is 0.
-func (l *RateLimit) update() {
-	if time.Since(l.FirstRequest).Seconds() >= l.TimeInterval {
-		l.CurrentRequests = 0
-		l.CanRequest = true
-	}
-}
-
 // Iterate tells RateLimit that a request has been made.
 // Returns true if successfully iterated, false if not.
 func (l *RateLimit) iterate() bool {
-	l.update()
 	if l.CanRequest {
 		if l.CurrentRequests == 0 {
 			l.FirstRequest = time.Now()

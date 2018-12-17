@@ -27,8 +27,8 @@ func NewSession(APIKey string) (s Session) {
 	}
 
 	s = Session{
-		key:       APIKey,
-		limiter:   NewRateLimit(),
+		key:     APIKey,
+		limiter: NewRateLimit(),
 	}
 
 	return s
