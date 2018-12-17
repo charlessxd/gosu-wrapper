@@ -91,8 +91,6 @@ type User struct {
 	apiURL string
 
 	session *Session
-
-	listeners []UserHandler
 }
 
 // UserEvent stores data for events related to an individual osu user.
@@ -168,32 +166,4 @@ func (u *User) Update() error {
 
 	*u = user[0]
 	return nil
-}
-
-func (u *User) AddListener(h UserHandler, ch chan string) {
-	if u.listeners == nil {
-		u.listeners = []UserHandler{}
-	}
-	if _, ok := u.session.listeners[u]; !ok {
-		u.session.listeners[u] = []chan string{ch}
-		u.listeners = append(u.listeners, h)
-	} else {
-		u.listeners = append(u.listeners, h)
-	}
-}
-
-func (u *User) RemoveListener(l UserHandler, ch chan string) {
-	for i := 0; i < len(u.listeners); i++ {
-		if u.listeners[i] == l {
-			
-		}
-	}
-	/*if _, ok := s.listeners[u]; ok {
-		for i := range s.listeners[e] {
-			if s.listeners[e][i] == ch {
-				s.listeners[e] = append(s.listeners[e][:i], s.listeners[e][i+1:]...)
-				break
-			}
-		}
-	}*/
 }
