@@ -26,7 +26,7 @@ func NewSession(APIKey string) (s *Session) {
 	if APIKey == "" {
 		return
 	}
-	
+
 	s = &Session{
 		key:     APIKey,
 		limiter: NewRateLimit(),

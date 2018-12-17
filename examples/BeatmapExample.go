@@ -19,6 +19,6 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
-	
+
 	fmt.Println(beatmap)
 }

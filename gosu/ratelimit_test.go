@@ -29,7 +29,6 @@ func TestRateLimit_Update(t *testing.T) {
 	}
 
 	l.iterate()
-	l.update()
 	if l.CanRequest {
 		t.Fatal("Expected false but got true.")
 	}
@@ -38,7 +37,6 @@ func TestRateLimit_Update(t *testing.T) {
 	}
 
 	time.Sleep(1.0 * time.Second)
-	l.update()
 	if !l.CanRequest {
 		t.Fatal("Expected true but got false.")
 	}
