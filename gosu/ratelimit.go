@@ -1,7 +1,6 @@
 package gosu
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -23,17 +22,6 @@ func NewRateLimit() RateLimit {
 		FirstRequest:    time.Now(),
 		TimeInterval:    60.0,
 	}
-
-	// Updates the rate limit every TimeInterval seconds.
-	go func(l *RateLimit) {
-		for {
-			d, _ := time.ParseDuration(fmt.Sprintf("%fs", l.TimeInterval))
-			time.Sleep(time.Second * d)
-
-			l.CanRequest = true
-			l.CurrentRequests = 0
-		}
-	}(&limiter)
 
 	return limiter
 }
