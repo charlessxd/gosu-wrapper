@@ -87,9 +87,10 @@ type User struct {
 	// The events of the user.
 	Events []OsuEvent `json:"events"`
 
-	// API Call URL
+	// API Call URL.
 	apiURL string
 
+	// Session fetched from
 	session *Session
 }
 

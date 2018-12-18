@@ -71,11 +71,17 @@ type UserBest struct {
 
 	// PP rewarded for achieving the play, as a float value.
 	PP float64 `json:"pp,string"`
+
+	// API Call URL.
+	apiURL string
+
+	// Session fetched from
+	session *Session
 }
 
 // FetchUserBest returns metadata about a user's highest rated plays.
 func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
-	userbest := new([]UserBest)
+	userbest := *new([]UserBest)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -99,11 +105,14 @@ func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 	err := s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
 
 	if err != nil {
-		return *userbest, err
+		return userbest, err
 	}
-	if len(*userbest) == 0 {
-		return *userbest, errors.New("user not found")
+	if len(userbest) == 0 {
+		return userbest, errors.New("user not found")
 	}
 
-	return *userbest, nil
+	userbest[0].apiURL = s.buildCall(endpointUserBest, v)
+	userbest[0].session = s
+
+	return userbest, nil
 }

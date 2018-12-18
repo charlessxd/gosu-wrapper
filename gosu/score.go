@@ -84,11 +84,17 @@ type Score struct {
 	// Whether osu official servers store the replay.
 	// 1 = is stored, 0 = is not stored.
 	ReplayAvailable string `json:"replay_available"`
+
+	// API Call URL.
+	apiURL string
+
+	// Session fetched from
+	session *Session
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
 func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
-	scores := new([]Score)
+	scores := *new([]Score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -118,11 +124,14 @@ func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
 	err := s.parseJSON(s.buildCall(endpointScores, v), scores)
 
 	if err != nil {
-		return *scores, err
+		return scores, err
 	}
-	if len(*scores) == 0 {
-		return *scores, errors.New("no scores found")
+	if len(scores) == 0 {
+		return scores, errors.New("no scores found")
 	}
 
-	return *scores, nil
+	scores[0].apiURL = s.buildCall(endpointScores, v)
+	scores[0].session = s
+
+	return scores, nil
 }

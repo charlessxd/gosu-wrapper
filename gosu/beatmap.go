@@ -95,7 +95,7 @@ type Beatmap struct {
 
 	// The game mode the beatmap utilizes.
 	// 0 = standard, 1 = taiko, 2 = ctb, 3 = mania
-	Mode int `json:"mode,string"`
+	Mode string `json:"mode"`
 
 	// The tags of the beatmap separated by spaces.
 	Tags string `json:"tags"`
@@ -111,11 +111,17 @@ type Beatmap struct {
 
 	// The maximum combo a user can reach playing the beatmap.
 	MaxCombo int `json:"max_combo,string"`
+
+	// API Call URL.
+	apiURL string
+
+	// Session fetched from
+	session *Session
 }
 
 // FetchBeatmap returns metadata about one beatmap
 func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
-	beatmap := new([]Beatmap)
+	beatmap := *new([]Beatmap)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -141,9 +147,31 @@ func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	if err != nil {
 		return Beatmap{}, err
 	}
-	if len(*beatmap) == 0 {
+	if len(beatmap) == 0 {
 		return Beatmap{}, errors.New("no beatmaps found")
 	}
 
-	return (*beatmap)[0], nil
+	beatmap[0].apiURL = s.buildCall(endpointBeatmaps, v)
+	beatmap[0].session = s
+
+	return beatmap[0], nil
+}
+
+func (b *Beatmap) Update() error {
+	beatmap := *new([]Beatmap)
+
+	err := b.session.parseJSON(b.apiURL, &beatmap)
+
+	if err != nil {
+		return err
+	}
+	if b.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(beatmap) == 0 {
+		return errors.New("user not found")
+	}
+
+	*b = beatmap[0]
+	return nil
 }

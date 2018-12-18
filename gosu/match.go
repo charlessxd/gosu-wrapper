@@ -18,6 +18,12 @@ type Match struct {
 
 	// Contains all of the games played in the match.
 	Games []MatchGame `json:"games"`
+
+	// API Call URL.
+	apiURL string
+
+	// Session fetched from
+	session *Session
 }
 
 // MatchDetails stores data for the details of a specific multi-player match.
@@ -117,7 +123,7 @@ type MatchScore struct {
 
 // FetchMatch returns metadata about a match.
 func (s *Session) FetchMatch(call MatchCall) (Match, error) {
-	match := new([]Match)
+	match := *new([]Match)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -133,9 +139,12 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 	if err != nil {
 		return Match{}, err
 	}
-	if len(*match) == 0 {
+	if len(match) == 0 {
 		return Match{}, errors.New("match not found")
 	}
 
-	return (*match)[0], nil
+	match[0].apiURL = s.buildCall(endpointMatch, v)
+	match[0].session = s
+
+	return match[0], nil
 }

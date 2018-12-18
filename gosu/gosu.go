@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -18,29 +17,19 @@ type Session struct {
 	key string
 
 	// Rate limit
-	limiter RateLimit
+	limiter *RateLimit
 }
 
 // NewSession creates a Session using the user's APIKey.
-func NewSession(APIKey string) (s *Session) {
+func NewSession(APIKey string) (s Session) {
 	if APIKey == "" {
 		return
 	}
 
-	s = &Session{
+	s = Session{
 		key:     APIKey,
 		limiter: NewRateLimit(),
 	}
-
-	// Updates limiter every TimeInterval seconds.
-	go func(s *Session) {
-		for {
-			d, _ := time.ParseDuration(fmt.Sprintf("%fs", s.limiter.TimeInterval))
-			time.Sleep(time.Second * d)
-
-			s.limiter.CanRequest = true
-		}
-	}(s)
 
 	return s
 }

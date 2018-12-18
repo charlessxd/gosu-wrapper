@@ -68,11 +68,17 @@ type UserRecent struct {
 
 	// The letter ranking of the top play.
 	Rank string `json:"rank"`
+
+	// API Call URL.
+	apiURL string
+
+	// Session fetched from
+	session *Session
 }
 
 // FetchUserRecent returns metadata about a user's recent plays.
 func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
-	userrecent := new([]UserRecent)
+	userrecent := *new([]UserRecent)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -96,11 +102,14 @@ func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 	err := s.parseJSON(s.buildCall(endpointUserRecent, v), userrecent)
 
 	if err != nil {
-		return *userrecent, err
+		return userrecent, err
 	}
-	if len(*userrecent) == 0 {
-		return *userrecent, errors.New("user not found")
+	if len(userrecent) == 0 {
+		return userrecent, errors.New("user not found")
 	}
 
-	return *userrecent, nil
+	userrecent[0].apiURL = s.buildCall(endpointUserRecent, v)
+	userrecent[0].session = s
+
+	return userrecent, nil
 }
