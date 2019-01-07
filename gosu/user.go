@@ -147,7 +147,7 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 	return user[0], nil
 }
 
-// Updates a User.
+// Update updates a User.
 func (u *User) Update() error {
 	user := *new([]User)
 

@@ -121,7 +121,7 @@ func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 	return userrecent, nil
 }
 
-// Updates a User's recent plays.
+// Update updates a User's recent plays.
 func (u *UserRecent) Update() error {
 	ur := *new([]UserRecentPlay)
 

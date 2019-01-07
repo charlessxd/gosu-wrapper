@@ -143,7 +143,7 @@ func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
 	return ss, nil
 }
 
-// Updates the Scores on a Beatmap
+// Update updates the Scores on a Beatmap
 func (ss *Scores) Update() error {
 	scores := *new([]Score)
 
