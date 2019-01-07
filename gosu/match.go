@@ -149,6 +149,7 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 	return match[0], nil
 }
 
+// Updates a Match.
 func (m *Match) Update() error {
 	match := *new([]Match)
 

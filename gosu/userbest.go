@@ -124,6 +124,7 @@ func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
 	return ub, nil
 }
 
+// Updates a User's top plays.
 func (u *UserBest) Update() error {
 	up := *new([]UserBestPlay)
 
