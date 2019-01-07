@@ -38,6 +38,8 @@ type BeatmapsCall struct {
 type Beatmaps struct {
 	Beatmaps []Beatmap
 
+	// Whether converted beatmaps are included
+	// 0 = not included, 1 = included
 	Converted string
 
 	// API Call URL.
@@ -114,7 +116,7 @@ func (s *Session) FetchBeatmaps(call BeatmapsCall) (Beatmaps, error) {
 func (set *Beatmaps) Update() error {
 	beatmaps := *new([]Beatmap)
 
-	err := set.session.parseJSON(set.apiURL, &beatmaps)
+	err := set.session.parseJSON(set.apiURL, beatmaps)
 
 	if err != nil {
 		return err
@@ -126,10 +128,12 @@ func (set *Beatmaps) Update() error {
 		return errors.New("user not found")
 	}
 
-	set.Beatmaps = beatmaps
+	(*set).Beatmaps = beatmaps
 
+	// Allows for the updating of individual beatmaps
 	for i := 0; i < len(set.Beatmaps); i++ {
 		v := url.Values{}
+		v.Add(endpointAPIKey, set.session.key)
 
 		if set.Converted != "" {
 			v.Add(endpointParamConverted, set.Converted)
@@ -137,7 +141,7 @@ func (set *Beatmaps) Update() error {
 
 		v.Add(endpointParamBeatmapID, set.Beatmaps[i].BeatmapID)
 		v.Add(endpointParamMode, set.Beatmaps[i].Mode)
-		set.Beatmaps[i].apiURL = set.apiURL
+		set.Beatmaps[i].apiURL = set.session.buildCall(endpointBeatmaps, v)
 		set.Beatmaps[i].session = set.session
 	}
 

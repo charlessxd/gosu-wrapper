@@ -25,7 +25,7 @@ type UserBestCall struct {
 }
 
 // UserBest stores data for a defined amount of top plays for a specific osu user.
-type UserBest struct {
+type UserBestPlay struct {
 	// The ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -71,6 +71,10 @@ type UserBest struct {
 
 	// PP rewarded for achieving the play, as a float value.
 	PP float64 `json:"pp,string"`
+}
+
+type UserBest struct {
+	Plays []UserBestPlay
 
 	// API Call URL.
 	apiURL string
@@ -80,8 +84,8 @@ type UserBest struct {
 }
 
 // FetchUserBest returns metadata about a user's highest rated plays.
-func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
-	userbest := *new([]UserBest)
+func (s *Session) FetchUserBest(call UserBestCall) (UserBest, error) {
+	userbest := *new([]UserBestPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -89,7 +93,7 @@ func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 	case call.UserID != "":
 		v.Add(endpointParamUserID, call.UserID)
 	default:
-		return []UserBest{}, errors.New("no identifying parameter given (UserID)")
+		return UserBest{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
@@ -104,15 +108,37 @@ func (s *Session) FetchUserBest(call UserBestCall) ([]UserBest, error) {
 
 	err := s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
 
+	ub := *new(UserBest)
+	ub.Plays = userbest
+
 	if err != nil {
-		return userbest, err
+		return ub, err
 	}
 	if len(userbest) == 0 {
-		return userbest, errors.New("user not found")
+		return ub, errors.New("user not found")
 	}
 
-	userbest[0].apiURL = s.buildCall(endpointUserBest, v)
-	userbest[0].session = s
+	ub.apiURL = s.buildCall(endpointUserBest, v)
+	ub.session = s
 
-	return userbest, nil
+	return ub, nil
+}
+
+func (u *UserBest) Update() error {
+	up := *new([]UserBestPlay)
+
+	err := u.session.parseJSON(u.apiURL, up)
+
+	if err != nil {
+		return err
+	}
+	if u.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(up) == 0 {
+		return errors.New("user not found")
+	}
+
+	(*u).Plays = up
+	return nil
 }

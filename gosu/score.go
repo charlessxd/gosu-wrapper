@@ -84,6 +84,10 @@ type Score struct {
 	// Whether osu official servers store the replay.
 	// 1 = is stored, 0 = is not stored.
 	ReplayAvailable string `json:"replay_available"`
+}
+
+type Scores struct {
+	Scores []Score
 
 	// API Call URL.
 	apiURL string
@@ -93,7 +97,7 @@ type Score struct {
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
+func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
 	scores := *new([]Score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
@@ -102,7 +106,7 @@ func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
 	case call.BeatmapID != "":
 		v.Add(endpointParamBeatmapID, call.BeatmapID)
 	default:
-		return []Score{}, errors.New("no identifying parameter given (BeatmapID)")
+		return Scores{}, errors.New("no identifying parameter given (BeatmapID)")
 	}
 
 	if call.UserID != "" {
@@ -123,15 +127,37 @@ func (s *Session) FetchScores(call ScoreCall) ([]Score, error) {
 
 	err := s.parseJSON(s.buildCall(endpointScores, v), scores)
 
+	ss := *new(Scores)
+	ss.Scores = scores
+
 	if err != nil {
-		return scores, err
+		return ss, err
 	}
 	if len(scores) == 0 {
-		return scores, errors.New("no scores found")
+		return ss, errors.New("no scores found")
 	}
 
-	scores[0].apiURL = s.buildCall(endpointScores, v)
-	scores[0].session = s
+	ss.apiURL = s.buildCall(endpointScores, v)
+	ss.session = s
 
-	return scores, nil
+	return ss, nil
+}
+
+func (ss *Scores) Update() error {
+	scores := *new([]Score)
+
+	err := ss.session.parseJSON(ss.apiURL, scores)
+
+	if err != nil {
+		return err
+	}
+	if ss.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(scores) == 0 {
+		return errors.New("user not found")
+	}
+
+	(*ss).Scores = scores
+	return nil
 }

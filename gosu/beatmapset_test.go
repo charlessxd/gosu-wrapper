@@ -14,7 +14,7 @@ func ExampleSession_FetchBeatmaps() {
 
 	bs, _ := session.FetchBeatmaps(c)
 
-	if len(bs) > 0 {
-		fmt.Println(bs[0])
+	if len(bs.Beatmaps) > 0 {
+		fmt.Println(bs.Beatmaps[0])
 	}
 }

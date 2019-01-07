@@ -14,7 +14,7 @@ func ExampleSession_FetchUserRecent() {
 
 	userrecent, _ := s.FetchUserRecent(c)
 
-	if len(userrecent) > 0 {
-		fmt.Println(userrecent[0].UserID)
+	if len(userrecent.Plays) > 0 {
+		fmt.Println(userrecent.Plays[0].UserID)
 	}
 }

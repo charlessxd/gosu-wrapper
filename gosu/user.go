@@ -85,7 +85,7 @@ type User struct {
 	PPCountryRank int `json:"pp_country_rank,string"`
 
 	// The events of the user.
-	Events []OsuEvent `json:"events"`
+	Events []UserEvent `json:"events"`
 
 	// API Call URL.
 	apiURL string
@@ -95,7 +95,7 @@ type User struct {
 }
 
 // UserEvent stores data for events related to an individual osu user.
-type OsuEvent struct {
+type UserEvent struct {
 	// The HTML for the event.
 	DisplayHTML string `json:"display_html"`
 
@@ -110,9 +110,6 @@ type OsuEvent struct {
 
 	// How epic the event is, between 1 and 32.
 	EpicFactor int `json:"epicfactor,string"`
-}
-
-type UserEvent struct {
 }
 
 // FetchUser returns metadata about a user.
@@ -153,7 +150,7 @@ func (s *Session) FetchUser(call UserCall) (User, error) {
 func (u *User) Update() error {
 	user := *new([]User)
 
-	err := u.session.parseJSON(u.apiURL, &user)
+	err := u.session.parseJSON(u.apiURL, user)
 
 	if err != nil {
 		return err

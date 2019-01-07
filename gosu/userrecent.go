@@ -25,7 +25,7 @@ type UserRecentCall struct {
 }
 
 // UserRecent stores data for all recent plays an individual osu user has submitted.
-type UserRecent struct {
+type UserRecentPlay struct {
 	// ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -68,6 +68,10 @@ type UserRecent struct {
 
 	// The letter ranking of the top play.
 	Rank string `json:"rank"`
+}
+
+type UserRecent struct {
+	Plays []UserRecentPlay
 
 	// API Call URL.
 	apiURL string
@@ -77,8 +81,8 @@ type UserRecent struct {
 }
 
 // FetchUserRecent returns metadata about a user's recent plays.
-func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
-	userrecent := *new([]UserRecent)
+func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
+	plays := *new([]UserRecentPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -86,7 +90,7 @@ func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 	case call.UserID != "":
 		v.Add(endpointParamUserID, call.UserID)
 	default:
-		return []UserRecent{}, errors.New("no identifying parameter given (UserID)")
+		return UserRecent{}, errors.New("no identifying parameter given (UserID)")
 	}
 
 	if call.Mode != "" {
@@ -99,17 +103,39 @@ func (s *Session) FetchUserRecent(call UserRecentCall) ([]UserRecent, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointUserRecent, v), userrecent)
+	err := s.parseJSON(s.buildCall(endpointUserRecent, v), plays)
+
+	userrecent := *new(UserRecent)
+	userrecent.Plays = plays
 
 	if err != nil {
 		return userrecent, err
 	}
-	if len(userrecent) == 0 {
+	if len(userrecent.Plays) == 0 {
 		return userrecent, errors.New("user not found")
 	}
 
-	userrecent[0].apiURL = s.buildCall(endpointUserRecent, v)
-	userrecent[0].session = s
+	userrecent.apiURL = s.buildCall(endpointUserRecent, v)
+	userrecent.session = s
 
 	return userrecent, nil
+}
+
+func (u *UserRecent) Update() error {
+	ur := *new([]UserRecentPlay)
+
+	err := u.session.parseJSON(u.apiURL, ur)
+
+	if err != nil {
+		return err
+	}
+	if u.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(ur) == 0 {
+		return errors.New("user not found")
+	}
+
+	(*u).Plays = ur
+	return nil
 }

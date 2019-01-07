@@ -160,7 +160,7 @@ func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 func (b *Beatmap) Update() error {
 	beatmap := *new([]Beatmap)
 
-	err := b.session.parseJSON(b.apiURL, &beatmap)
+	err := b.session.parseJSON(b.apiURL, beatmap)
 
 	if err != nil {
 		return err

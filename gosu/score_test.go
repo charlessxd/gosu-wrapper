@@ -14,7 +14,7 @@ func ExampleSession_FetchScores() {
 
 	scores, _ := session.FetchScores(c)
 
-	if len(scores) > 0 {
-		fmt.Println(scores[0].UserID)
+	if len(scores.Scores) > 0 {
+		fmt.Println(scores.Scores[0].UserID)
 	}
 }

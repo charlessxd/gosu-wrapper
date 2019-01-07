@@ -148,3 +148,22 @@ func (s *Session) FetchMatch(call MatchCall) (Match, error) {
 
 	return match[0], nil
 }
+
+func (m *Match) Update() error {
+	match := *new([]Match)
+
+	err := m.session.parseJSON(m.apiURL, match)
+
+	if err != nil {
+		return err
+	}
+	if m.apiURL == "" {
+		return errors.New("could not update user: user is empty")
+	}
+	if len(match) == 0 {
+		return errors.New("user not found")
+	}
+
+	*m = match[0]
+	return nil
+}
