@@ -24,7 +24,7 @@ type UserRecentCall struct {
 	Type string
 }
 
-// UserRecent stores data for all recent plays an individual osu user has submitted.
+// UserRecentPlay stores data for all recent plays an individual osu user has submitted.
 type UserRecentPlay struct {
 	// ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
@@ -70,6 +70,7 @@ type UserRecentPlay struct {
 	Rank string `json:"rank"`
 }
 
+// UserRecent stores UserRecentPlays and allows for them to be updated using Update.
 type UserRecent struct {
 	Plays []UserRecentPlay
 
@@ -137,6 +138,6 @@ func (u *UserRecent) Update() error {
 		return errors.New("user not found")
 	}
 
-	(*u).Plays = ur
+	u.Plays = ur
 	return nil
 }

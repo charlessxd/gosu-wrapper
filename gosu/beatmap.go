@@ -157,7 +157,7 @@ func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	return beatmap[0], nil
 }
 
-// Updates a beatmap.
+// Update updates a beatmap.
 func (b *Beatmap) Update() error {
 	beatmap := *new([]Beatmap)
 

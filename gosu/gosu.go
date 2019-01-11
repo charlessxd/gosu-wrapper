@@ -7,7 +7,6 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 )
 
@@ -42,7 +41,7 @@ func (s *Session) buildCall(endpoint string, v url.Values) string {
 // ParseJSON parses received JSON from url into a target interface
 func (s *Session) parseJSON(url string, target interface{}) error {
 	if !s.limiter.CanRequest {
-		return errors.New("ratelimit exceded (Limit: " + strconv.Itoa(s.limiter.MaxRequests) + " requests.)")
+		return errors.New("ratelimit exceeded")
 	}
 
 	var myClient = &http.Client{Timeout: 10 * time.Second}

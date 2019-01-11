@@ -140,6 +140,6 @@ func (u *UserBest) Update() error {
 		return errors.New("user not found")
 	}
 
-	(*u).Plays = up
+	u.Plays = up
 	return nil
 }

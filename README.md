@@ -3,7 +3,6 @@
 [![GoDoc](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu?status.svg)](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu) 
 [![GoReport](https://goreportcard.com/badge/github.com/charlessxd/gosu-wrapper)](https://goreportcard.com/report/github.com/charlessxd/gosu-wrapper)
 
-This wrapper was initially intended for personal use, but feel free to use it if you feel it's of use. 
 The osu-api of which this is based on can be found [here](https://github.com/ppy/osu-api/wiki).
 
 
@@ -30,21 +29,19 @@ Examples can be found in the [examples directory](https://github.com/charlessxd/
 ```go
 s := gosu.NewSession(os.Getenv("API_KEY"))
 
-call := gosu.BeatmapCall{
-	BeatmapID: os.Getenv("BEATMAP_ID"),
+call := gosu.UserCall{
+	BeatmapID: os.Getenv("USER_ID"),
 }
 
-beatmap, _ := s.FetchBeatmap(call)
+user, _ := s.FetchUser(call)
 
 fmt.Println(beatmap)
 ```
 
 ## Documentation
 All exported variables and functions have been documented: 
+
 [![GoDoc](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu?status.svg)](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu) 
 
 ## To do
 * Examples
-
-## Links
-https://flaviocopes.com/golang-event-listeners/

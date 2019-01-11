@@ -86,6 +86,7 @@ type Score struct {
 	ReplayAvailable string `json:"replay_available"`
 }
 
+// Scores stores scores.
 type Scores struct {
 	Scores []Score
 
@@ -159,6 +160,6 @@ func (ss *Scores) Update() error {
 		return errors.New("user not found")
 	}
 
-	(*ss).Scores = scores
+	ss.Scores = scores
 	return nil
 }

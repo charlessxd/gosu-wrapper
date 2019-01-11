@@ -129,7 +129,7 @@ func (set *Beatmaps) Update() error {
 		return errors.New("user not found")
 	}
 
-	(*set).Beatmaps = beatmaps
+	set.Beatmaps = beatmaps
 
 	// Allows for the updating of individual beatmaps
 	for i := 0; i < len(set.Beatmaps); i++ {
