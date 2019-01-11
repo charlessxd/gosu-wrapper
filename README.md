@@ -16,26 +16,39 @@ go get github.com/charlessxd/gosu-wrapper/gosu
 
 
 ## Usage
-
 Import the package into your project.
-
 ```go
 import "github.com/charlessxd/gosu-wrapper/gosu"
 ```
 
+
+
 ## Examples
 Examples can be found in the [examples directory](https://github.com/charlessxd/gosu-wrapper/tree/master/examples).
-##### BeatmapExample.go 
+
+#####Example of FetchUser()
 ```go
-s := gosu.NewSession(os.Getenv("API_KEY"))
+package main
 
-call := gosu.UserCall{
-	BeatmapID: os.Getenv("USER_ID"),
+import (
+	"fmt"
+	"github.com/charlessxd/gosu-wrapper/gosu"
+)
+
+func main() {
+	s := gosu.NewSession("<API-KEY HERE>")
+
+	u, err := s.FetchUser(gosu.UserCall{
+		UserID: "1",
+	})
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println(u.Username)
 }
-
-user, _ := s.FetchUser(call)
-
-fmt.Println(beatmap)
 ```
 
 ## Documentation
@@ -44,4 +57,5 @@ All exported variables and functions have been documented:
 [![GoDoc](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu?status.svg)](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu) 
 
 ## To do
+* Mod support
 * Examples

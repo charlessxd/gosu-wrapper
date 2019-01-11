@@ -33,6 +33,8 @@ func NewSession(APIKey string) (s Session) {
 	return s
 }
 
+
+
 // Builds an API Call to osu API v1
 func (s *Session) buildCall(endpoint string, v url.Values) string {
 	return endpointAPI + endpoint + v.Encode()
