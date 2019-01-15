@@ -33,8 +33,6 @@ func NewSession(APIKey string) (s Session) {
 	return s
 }
 
-
-
 // Builds an API Call to osu API v1
 func (s *Session) buildCall(endpoint string, v url.Values) string {
 	return endpointAPI + endpoint + v.Encode()
@@ -60,4 +58,89 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	s.limiter.iterate()
 
 	return err
+}
+
+func (s *Session) Fetch(c, target interface{}) error {
+	switch c.(type) {
+	case UserCall:
+		call := c.(UserCall)
+		if _, ok := target.(User); ok {
+			if f, e := s.fetchUser(call); e == nil {
+				target = f
+			} else {
+				return errors.New("user does not exist")
+			}
+		} else {
+			return errors.New("target is not type User when c is type UserCall")
+		}
+	case BeatmapCall:
+		call := c.(BeatmapCall)
+		if _, ok := target.(Beatmap); ok {
+			if f, e := s.FetchBeatmap(call); e == nil {
+				target = f
+			} else {
+				return errors.New("beatmap does not exist")
+			}
+		} else {
+			return errors.New("target is not type Beatmap when c is type BeatmapCall")
+		}
+	case BeatmapsCall:
+		call := c.(BeatmapsCall)
+		if _, ok := target.(Beatmaps); ok {
+			if f, e := s.FetchBeatmaps(call); e == nil {
+				target = f
+			} else {
+				return errors.New("beatmaps do not exist")
+			}
+		} else {
+			return errors.New("target is not type Beatmaps when c is type BeatmapsCall")
+		}
+	case MatchCall:
+		call := c.(MatchCall)
+		if _, ok := target.(Match); ok {
+			if f, e := s.FetchMatch(call); e == nil {
+				target = f
+			} else {
+				return errors.New("match does not exist")
+			}
+		} else {
+			return errors.New("target is not type Match when c is type MatchCall")
+		}
+	case ScoresCall:
+		call := c.(ScoresCall)
+		if _, ok := target.(Scores); ok {
+			if f, e := s.FetchScores(call); e == nil {
+				target = f
+			} else {
+				return errors.New("beatmap does not exist")
+			}
+		} else {
+			return errors.New("target is not type Scores when c is type ScoresCall")
+		}
+	case UserBestCall:
+		call := c.(UserBestCall)
+		if _, ok := target.(UserBest); ok {
+			if f, e := s.FetchUserBest(call); e == nil {
+				target = f
+			} else {
+				return errors.New("user does not exist")
+			}
+		} else {
+			return errors.New("target is not type UserBest when c is type UserBestCall")
+		}
+	case UserRecent:
+		call := c.(UserRecentCall)
+		if _, ok := target.(UserRecent); ok {
+			if f, e := s.FetchUserRecent(call); e == nil {
+				target = f
+			} else {
+				return errors.New("user does not exist")
+			}
+		} else {
+			return errors.New("target is not type UserRecent when c is type UserRecentCall")
+		}
+	default:
+		return errors.New("c is not an api call type; i.e. UserCall, BeatmapCall, etc")
+	}
+	return nil
 }

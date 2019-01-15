@@ -113,7 +113,7 @@ type UserEvent struct {
 }
 
 // FetchUser returns metadata about a user.
-func (s *Session) FetchUser(call UserCall) (User, error) {
+func (s *Session) fetchUser(call UserCall) (User, error) {
 	user := *new([]User)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

@@ -2,32 +2,34 @@ package rank_change_notifier
 
 import (
 	"OsuAPI/gosu-wrapper/gosu"
-	"flag"
 	"fmt"
+	"os"
 	"strconv"
 	"time"
 )
 
 var (
-	APIKey string
+	Key    string
 	UserID string
 )
 
 func init() {
-	flag.StringVar(&APIKey, "k", "", "API Key")
-	flag.StringVar(&UserID, "u", "", "User's ID")
+	Key = os.Getenv("API_KEY")
+	UserID = os.Getenv("USER_ID")
 }
 
 func main() {
-	s := gosu.NewSession(APIKey)
+	s := gosu.NewSession(Key)
 
 	c := gosu.UserCall{
 		UserID: UserID,
 	}
 
-	u, err := s.FetchUser(c)
-	if err != nil {
-		fmt.Println(err)
+	u := gosu.User{}
+
+	if e := s.Fetch(&c, &u); e != nil {
+		fmt.Println(e)
+		return
 	}
 
 	event := make(chan string)

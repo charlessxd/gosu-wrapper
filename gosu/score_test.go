@@ -8,7 +8,7 @@ import (
 func ExampleSession_FetchScores() {
 	session := NewSession(os.Getenv("API_KEY"))
 
-	c := ScoreCall{
+	c := ScoresCall{
 		BeatmapID: os.Getenv("BEATMAP_ID"),
 	}
 

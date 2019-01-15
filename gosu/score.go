@@ -5,8 +5,8 @@ import (
 	"net/url"
 )
 
-// ScoreCall is used to build an API call to retrieve metadata of scores set on a beatmap.
-type ScoreCall struct {
+// ScoresCall is used to build an API call to retrieve metadata of scores set on a beatmap.
+type ScoresCall struct {
 	// ID of the beatmap
 	BeatmapID string
 
@@ -98,7 +98,7 @@ type Scores struct {
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *Session) FetchScores(call ScoreCall) (Scores, error) {
+func (s *Session) FetchScores(call ScoresCall) (Scores, error) {
 	scores := *new([]Score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

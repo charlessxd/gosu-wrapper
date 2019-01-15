@@ -58,4 +58,4 @@ All exported variables and functions have been documented:
 
 ## To do
 * Mod support
-* Examples
+* Exports
