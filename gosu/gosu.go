@@ -66,7 +66,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 		call := c.(UserCall)
 		if _, ok := target.(User); ok {
 			if f, e := s.fetchUser(call); e == nil {
-				target = f
+				target = &f
 			} else {
 				return errors.New("user does not exist")
 			}

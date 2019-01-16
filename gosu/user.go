@@ -85,7 +85,7 @@ type User struct {
 	PPCountryRank int `json:"pp_country_rank,string"`
 
 	// The events of the user.
-	Events []UserEvent `json:"events"`
+	Events []userEvent `json:"events"`
 
 	// API Call URL.
 	apiURL string
@@ -94,8 +94,8 @@ type User struct {
 	session *Session
 }
 
-// UserEvent stores data for events related to an individual osu user.
-type UserEvent struct {
+// userEvent stores data for events related to an individual osu user.
+type userEvent struct {
 	// The HTML for the event.
 	DisplayHTML string `json:"display_html"`
 

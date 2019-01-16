@@ -25,7 +25,7 @@ type UserRecentCall struct {
 }
 
 // UserRecentPlay stores data for all recent plays an individual osu user has submitted.
-type UserRecentPlay struct {
+type userRecentPlay struct {
 	// ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -72,7 +72,7 @@ type UserRecentPlay struct {
 
 // UserRecent stores UserRecentPlays and allows for them to be updated using Update.
 type UserRecent struct {
-	Plays []UserRecentPlay
+	Plays []userRecentPlay
 
 	// API Call URL.
 	apiURL string
@@ -83,7 +83,7 @@ type UserRecent struct {
 
 // FetchUserRecent returns metadata about a user's recent plays.
 func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
-	plays := *new([]UserRecentPlay)
+	plays := *new([]userRecentPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -124,7 +124,7 @@ func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 
 // Update updates a User's recent plays.
 func (u *UserRecent) Update() error {
-	ur := *new([]UserRecentPlay)
+	ur := *new([]userRecentPlay)
 
 	err := u.session.parseJSON(u.apiURL, ur)
 

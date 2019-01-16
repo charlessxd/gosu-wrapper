@@ -14,10 +14,10 @@ type MatchCall struct {
 // Match stores data about a specific multi-player match.
 type Match struct {
 	// Details of the match.
-	Details MatchDetails `json:"match"`
+	Details matchDetails `json:"match"`
 
 	// Contains all of the games played in the match.
-	Games []MatchGame `json:"games"`
+	Games []matchGame `json:"games"`
 
 	// API Call URL.
 	apiURL string
@@ -27,7 +27,7 @@ type Match struct {
 }
 
 // MatchDetails stores data for the details of a specific multi-player match.
-type MatchDetails struct {
+type matchDetails struct {
 	// The ID of the match.
 	MatchID string `json:"match_id"`
 
@@ -42,7 +42,7 @@ type MatchDetails struct {
 }
 
 // MatchGame stores data for all of the games played in a specific multi-player match.
-type MatchGame struct {
+type matchGame struct {
 	// The ID of the game.
 	GameID string `json:"game_id"`
 
@@ -70,11 +70,11 @@ type MatchGame struct {
 	Mods string `json:"mods"`
 
 	// The scores of all users who participated in the game.
-	Scores []MatchScore `json:"scores"`
+	Scores []matchScore `json:"scores"`
 }
 
 // MatchScore stores data for each individual user who participated in a game.
-type MatchScore struct {
+type matchScore struct {
 	// Zero-based index of the user's slot.
 	Slot string `json:"slot"`
 

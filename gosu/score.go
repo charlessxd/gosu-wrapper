@@ -31,7 +31,7 @@ type ScoresCall struct {
 }
 
 // Score stores the data for the top 100 scores of a specific beatmap.
-type Score struct {
+type score struct {
 	// The ID of the score.
 	ScoreID string `json:"score_id"`
 
@@ -88,7 +88,7 @@ type Score struct {
 
 // Scores stores scores.
 type Scores struct {
-	Scores []Score
+	Scores []score
 
 	// API Call URL.
 	apiURL string
@@ -99,7 +99,7 @@ type Scores struct {
 
 // FetchScores returns metadata about scores set on a beatmap.
 func (s *Session) FetchScores(call ScoresCall) (Scores, error) {
-	scores := *new([]Score)
+	scores := *new([]score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -146,7 +146,7 @@ func (s *Session) FetchScores(call ScoresCall) (Scores, error) {
 
 // Update updates the Scores on a Beatmap
 func (ss *Scores) Update() error {
-	scores := *new([]Score)
+	scores := *new([]score)
 
 	err := ss.session.parseJSON(ss.apiURL, scores)
 
