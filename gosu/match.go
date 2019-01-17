@@ -26,7 +26,7 @@ type Match struct {
 	session *Session
 }
 
-// MatchDetails stores data for the details of a specific multi-player match.
+// matchDetails stores data for the details of a specific multi-player match.
 type matchDetails struct {
 	// The ID of the match.
 	MatchID string `json:"match_id"`
@@ -41,7 +41,7 @@ type matchDetails struct {
 	EndTime string `json:"end_time"`
 }
 
-// MatchGame stores data for all of the games played in a specific multi-player match.
+// matchGame stores data for all of the games played in a specific multi-player match.
 type matchGame struct {
 	// The ID of the game.
 	GameID string `json:"game_id"`
@@ -73,7 +73,7 @@ type matchGame struct {
 	Scores []matchScore `json:"scores"`
 }
 
-// MatchScore stores data for each individual user who participated in a game.
+// matchScore stores data for each individual user who participated in a game.
 type matchScore struct {
 	// Zero-based index of the user's slot.
 	Slot string `json:"slot"`

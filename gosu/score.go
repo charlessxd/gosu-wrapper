@@ -30,7 +30,7 @@ type ScoresCall struct {
 	Limit string
 }
 
-// Score stores the data for the top 100 scores of a specific beatmap.
+// score stores the data for the top 100 scores of a specific beatmap.
 type score struct {
 	// The ID of the score.
 	ScoreID string `json:"score_id"`

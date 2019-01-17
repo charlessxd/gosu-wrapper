@@ -112,7 +112,7 @@ type userEvent struct {
 	EpicFactor int `json:"epicfactor,string"`
 }
 
-// FetchUser returns metadata about a user.
+// fetchUser returns metadata about a user.
 func (s *Session) fetchUser(call UserCall) (User, error) {
 	user := *new([]User)
 	v := url.Values{}

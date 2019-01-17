@@ -1,6 +1,5 @@
 package gosu
 
-// endpoint Constants
 const (
 	endpointOsu    = "https://osu.ppy.sh/"
 	endpointAPI    = endpointOsu + "api/"

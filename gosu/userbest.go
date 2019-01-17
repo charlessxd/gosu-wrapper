@@ -24,7 +24,7 @@ type UserBestCall struct {
 	Type string
 }
 
-// UserBest stores data for a defined amount of top plays for a specific osu user.
+// userBest stores data for a defined amount of top plays for a specific osu user.
 type userBestPlay struct {
 	// The ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
@@ -73,6 +73,7 @@ type userBestPlay struct {
 	PP float64 `json:"pp,string"`
 }
 
+// UserBest holds plays
 type UserBest struct {
 	Plays []userBestPlay
 
