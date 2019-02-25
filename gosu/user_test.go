@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func ExampleSession_FetchUser() {
+func ExampleSession_fetchUser() {
 	s := NewSession(os.Getenv("API_KEY"))
 	c := UserCall{
 		UserID: os.Getenv("USER_ID"),

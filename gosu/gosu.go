@@ -44,7 +44,8 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 		return errors.New("ratelimit exceeded")
 	}
 
-	var myClient = &http.Client{Timeout: 10 * time.Second}
+	myClient := &http.Client{Timeout: 10 * time.Second}
+
 	r, err := myClient.Get(url)
 	if err != nil {
 		return err

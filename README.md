@@ -36,18 +36,19 @@ import (
 )
 
 func main() {
-	s := gosu.NewSession("<API-KEY HERE>")
-
-	u, err := s.FetchUser(gosu.UserCall{
-		UserID: "1",
-	})
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-
-	fmt.Println(u.Username)
+	s := gosu.NewSession(os.Getenv("API_KEY"))
+	
+	c := gosu.UserCall{
+        UserID: "1",
+    }
+    
+    u := gosu.User{}
+    
+    if err = s.Fetch(c, u); err != nil {
+	    fmt.Println(err.Error())    
+    } else {
+        fmt.Println(u.Username) 
+    }
 }
 ```
 

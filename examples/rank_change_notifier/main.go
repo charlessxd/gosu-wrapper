@@ -42,9 +42,9 @@ func main() {
 			if t.PPRank != u.PPRank {
 				change := ""
 				if t.PPRank < u.PPRank {
-					change = fmt.Sprintf("+%d", strconv.FormatInt(u.PPRank-t.PPRank, 10))
+					change = fmt.Sprintf("+%s", strconv.FormatInt(u.PPRank-t.PPRank, 10))
 				} else {
-					change = fmt.Sprintf("%d", strconv.FormatInt(t.PPRank-u.PPRank, 10))
+					change = fmt.Sprintf("%s", strconv.FormatInt(t.PPRank-u.PPRank, 10))
 				}
 
 				e <- fmt.Sprintf("%s rank change: %s", u.Username, change)

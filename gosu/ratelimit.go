@@ -32,7 +32,7 @@ func NewRateLimit() *RateLimit {
 			if l.CurrentRequests >= l.MaxRequests {
 				l.CanRequest = false
 			}
-			if time.Since(l.FirstRequest) >= d && !l.CanRequest {
+			if time.Since(l.FirstRequest) >= d {
 				l.CanRequest = true
 				l.CurrentRequests = 0
 			}
@@ -43,18 +43,28 @@ func NewRateLimit() *RateLimit {
 }
 
 // SetRateLimit sets a Session's MaxRequests and TimeInterval to a given amount.
-func (s *Session) SetRateLimit(max int, seconds float64) {
-	s.limiter = &RateLimit{
-		MaxRequests:     max,
-		CurrentRequests: 0,
-		FirstRequest:    time.Now(),
-		TimeInterval:    seconds,
-		CanRequest:      true,
+func (s *Session) SetRateLimit(maxRequests int, seconds float64) {
+	if s.limiter == nil {
+		s.limiter = &RateLimit{
+			MaxRequests:     maxRequests,
+			CurrentRequests: 0,
+			FirstRequest:    time.Now(),
+			TimeInterval:    seconds,
+			CanRequest:      true,
+		}
+	} else {
+		s.limiter.MaxRequests = maxRequests
+		s.limiter.TimeInterval = seconds
+		s.limiter.reset()
 	}
 }
 
-// Iterate tells RateLimit that a request has been made.
-// Returns true if successfully iterated, false if not.
+func (l *RateLimit) reset() {
+	l.CurrentRequests = 0
+	l.FirstRequest = time.Now()
+	l.CanRequest = true
+}
+
 func (l *RateLimit) iterate() bool {
 	if l.CurrentRequests < l.MaxRequests {
 		if l.CurrentRequests == 0 {

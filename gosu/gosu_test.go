@@ -19,3 +19,15 @@ func TestSession_buildCall(t *testing.T) {
 		t.Fatal("Expected \"" + expected + "\" but got \"" + result + "\".")
 	}
 }
+
+func TestSession_Fetch(t *testing.T) {
+	s := NewSession("12345")
+
+	c := UserCall{}
+
+	b := Beatmap{}
+
+	if e := s.Fetch(c, b); e == nil {
+		t.Fatal("Expected target mismatch error")
+	}
+}
