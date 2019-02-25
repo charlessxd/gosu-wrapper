@@ -26,7 +26,7 @@ import "github.com/charlessxd/gosu-wrapper/gosu"
 ## Examples
 Examples can be found in the [examples directory](https://github.com/charlessxd/gosu-wrapper/tree/master/examples).
 
-##### Example of FetchUser()
+##### Example of Fetch() to get user metadata.
 ```go
 package main
 
