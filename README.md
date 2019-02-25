@@ -45,7 +45,7 @@ func main() {
     u := gosu.User{}
     
     if err = s.Fetch(c, u); err != nil {
-	    fmt.Println(err.Error())    
+        fmt.Println(err.Error())    
     } else {
         fmt.Println(u.Username) 
     }
