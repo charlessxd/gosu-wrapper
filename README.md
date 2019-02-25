@@ -36,9 +36,9 @@ import (
 )
 
 func main() {
-	s := gosu.NewSession(os.Getenv("API_KEY"))
+    s := gosu.NewSession(os.Getenv("API_KEY"))
 	
-	c := gosu.UserCall{
+    c := gosu.UserCall{
         UserID: "1",
     }
     
