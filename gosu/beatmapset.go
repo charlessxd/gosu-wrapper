@@ -50,7 +50,7 @@ type Beatmaps struct {
 }
 
 // FetchBeatmaps returns metadata about multiple beatmaps.
-func (s *Session) FetchBeatmaps(call BeatmapsCall) (Beatmaps, error) {
+func (s *Session) fetchBeatmaps(call BeatmapsCall) (Beatmaps, error) {
 	beatmaps := *new([]Beatmap)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

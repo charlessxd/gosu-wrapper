@@ -98,7 +98,7 @@ type Scores struct {
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *Session) FetchScores(call ScoresCall) (Scores, error) {
+func (s *Session) fetchScores(call ScoresCall) (Scores, error) {
 	scores := *new([]score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

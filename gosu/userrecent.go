@@ -82,7 +82,7 @@ type UserRecent struct {
 }
 
 // FetchUserRecent returns metadata about a user's recent plays.
-func (s *Session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
+func (s *Session) fetchUserRecent(call UserRecentCall) (UserRecent, error) {
 	plays := *new([]userRecentPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

@@ -77,7 +77,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case BeatmapCall:
 		call := c.(BeatmapCall)
 		if _, ok := target.(Beatmap); ok {
-			if f, e := s.FetchBeatmap(call); e == nil {
+			if f, e := s.fetchBeatmap(call); e == nil {
 				target = f
 			} else {
 				return errors.New("beatmap does not exist")
@@ -88,7 +88,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case BeatmapsCall:
 		call := c.(BeatmapsCall)
 		if _, ok := target.(Beatmaps); ok {
-			if f, e := s.FetchBeatmaps(call); e == nil {
+			if f, e := s.fetchBeatmaps(call); e == nil {
 				target = f
 			} else {
 				return errors.New("beatmaps do not exist")
@@ -99,7 +99,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case MatchCall:
 		call := c.(MatchCall)
 		if _, ok := target.(Match); ok {
-			if f, e := s.FetchMatch(call); e == nil {
+			if f, e := s.fetchMatch(call); e == nil {
 				target = f
 			} else {
 				return errors.New("match does not exist")
@@ -110,7 +110,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case ScoresCall:
 		call := c.(ScoresCall)
 		if _, ok := target.(Scores); ok {
-			if f, e := s.FetchScores(call); e == nil {
+			if f, e := s.fetchScores(call); e == nil {
 				target = f
 			} else {
 				return errors.New("beatmap does not exist")
@@ -121,7 +121,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case UserBestCall:
 		call := c.(UserBestCall)
 		if _, ok := target.(UserBest); ok {
-			if f, e := s.FetchUserBest(call); e == nil {
+			if f, e := s.fetchUserBest(call); e == nil {
 				target = f
 			} else {
 				return errors.New("user does not exist")

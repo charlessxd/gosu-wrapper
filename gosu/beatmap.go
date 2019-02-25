@@ -120,7 +120,7 @@ type Beatmap struct {
 }
 
 // FetchBeatmap returns metadata about one beatmap
-func (s *Session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
+func (s *Session) fetchBeatmap(call BeatmapCall) (Beatmap, error) {
 	beatmap := *new([]Beatmap)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
