@@ -132,7 +132,7 @@ func (s *Session) Fetch(c, target interface{}) error {
 	case UserRecent:
 		call := c.(UserRecentCall)
 		if _, ok := target.(UserRecent); ok {
-			if f, e := s.FetchUserRecent(call); e == nil {
+			if f, e := s.fetchUserRecent(call); e == nil {
 				target = f
 			} else {
 				return errors.New("user does not exist")
