@@ -1,7 +1,9 @@
 package gosu
 
 import (
+	"fmt"
 	"net/url"
+	"os"
 	"testing"
 )
 
@@ -30,4 +32,16 @@ func TestSession_Fetch(t *testing.T) {
 	if e := s.Fetch(c, b); e == nil {
 		t.Fatal("Expected target mismatch error")
 	}
+}
+
+func ExampleSession_Fetch() {
+	s := NewSession(os.Getenv("API_KEY"))
+
+	call := UserCall{UserID: os.Getenv("USER_ID")}
+
+	user := User{}
+
+	s.Fetch(call, user)
+
+	fmt.Println(user.Username)
 }

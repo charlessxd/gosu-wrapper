@@ -33,12 +33,10 @@ func NewSession(APIKey string) (s Session) {
 	return s
 }
 
-// Builds an API Call to osu API v1
 func (s *Session) buildCall(endpoint string, v url.Values) string {
 	return endpointAPI + endpoint + v.Encode()
 }
 
-// ParseJSON parses received JSON from url into a target interface
 func (s *Session) parseJSON(url string, target interface{}) error {
 	if !s.limiter.CanRequest {
 		return errors.New("ratelimit exceeded")
@@ -61,6 +59,10 @@ func (s *Session) parseJSON(url string, target interface{}) error {
 	return err
 }
 
+// Fetch puts the metadata from the call in c into target.
+// If c is type UserCall, target must be type User
+// If c is type BeatmapCall, target must be type Beatmap
+// If c is type BeatmapsCall, target must be type Beatmaps
 func (s *Session) Fetch(c, target interface{}) error {
 	switch c.(type) {
 	case UserCall:
