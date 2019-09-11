@@ -91,7 +91,7 @@ type User struct {
 	apiURL string
 
 	// Session fetched from
-	session *Session
+	session *session
 }
 
 // userEvent stores data for events related to an individual osu user.
@@ -113,7 +113,7 @@ type userEvent struct {
 }
 
 // fetchUser returns metadata about a user.
-func (s *Session) FetchUser(call UserCall) (User, error) {
+func (s *session) FetchUser(call UserCall) (User, error) {
 	user := *new([]User)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

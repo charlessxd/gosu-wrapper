@@ -9,13 +9,13 @@ import (
 )
 
 var (
-	Key    string
-	UserID string
+	key    string
+	userID string
 )
 
 func init() {
-	Key = os.Getenv("API_KEY")
-	UserID = os.Getenv("USER_ID")
+	key = os.Getenv("API_KEY")
+	userID = os.Getenv("USER_ID")
 }
 
 type userRankEvent struct {
@@ -32,11 +32,11 @@ type userRankEvent struct {
 */
 func main() {
 	// Create a session to access the osu-api.
-	s := gosu.NewSession(Key)
+	s := gosu.NewSession(key)
 
 	// Create a UserCall to get user metadata.
 	c := gosu.UserCall{
-		UserID: UserID,
+		UserID: userID,
 	}
 
 	// Create a User to hold the user metadata.

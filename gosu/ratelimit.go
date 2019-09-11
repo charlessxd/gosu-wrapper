@@ -43,7 +43,7 @@ func NewRateLimit() *RateLimit {
 }
 
 // SetRateLimit sets a Session's MaxRequests and TimeInterval to a given amount.
-func (s *Session) SetRateLimit(maxRequests int, seconds float64) {
+func (s *session) SetRateLimit(maxRequests int, seconds float64) {
 	if s.limiter == nil {
 		s.limiter = &RateLimit{
 			MaxRequests:     maxRequests,

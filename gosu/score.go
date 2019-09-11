@@ -94,11 +94,11 @@ type Scores struct {
 	apiURL string
 
 	// Session fetched from
-	session *Session
+	session *session
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *Session) fetchScores(call ScoresCall) (Scores, error) {
+func (s *session) fetchScores(call ScoresCall) (Scores, error) {
 	scores := *new([]score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

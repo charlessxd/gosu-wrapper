@@ -11,7 +11,7 @@ import (
 )
 
 // Session holds the API key and rate limiter.
-type Session struct {
+type session struct {
 	// Osu API Key
 	key string
 
@@ -20,12 +20,12 @@ type Session struct {
 }
 
 // NewSession creates a Session using the user's APIKey.
-func NewSession(APIKey string) (s Session) {
+func NewSession(APIKey string) (s session) {
 	if APIKey == "" {
 		return
 	}
 
-	s = Session{
+	s = session{
 		key:     APIKey,
 		limiter: NewRateLimit(),
 	}
@@ -33,11 +33,11 @@ func NewSession(APIKey string) (s Session) {
 	return s
 }
 
-func (s *Session) buildCall(endpoint string, v url.Values) string {
+func (s *session) buildCall(endpoint string, v url.Values) string {
 	return endpointAPI + endpoint + v.Encode()
 }
 
-func (s *Session) parseJSON(url string, target interface{}) error {
+func (s *session) parseJSON(url string, target interface{}) error {
 	if !s.limiter.CanRequest {
 		return errors.New("ratelimit exceeded")
 	}

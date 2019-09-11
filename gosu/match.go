@@ -23,7 +23,7 @@ type Match struct {
 	apiURL string
 
 	// Session fetched from
-	session *Session
+	session *session
 }
 
 // matchDetails stores data for the details of a specific multi-player match.
@@ -122,7 +122,7 @@ type matchScore struct {
 }
 
 // FetchMatch returns metadata about a match.
-func (s *Session) fetchMatch(call MatchCall) (Match, error) {
+func (s *session) FetchMatch(call MatchCall) (Match, error) {
 	match := *new([]Match)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
