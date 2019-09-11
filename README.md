@@ -23,32 +23,45 @@ import "github.com/charlessxd/gosu-wrapper/gosu"
 
 
 
-## Examples
-Examples can be found in the [examples directory](https://github.com/charlessxd/gosu-wrapper/tree/master/examples).
 
-##### Example of Fetch() to get user metadata.
+
+##### Example of FetchUser() to get user metadata.
 ```go
 package main
 
 import (
-	"fmt"
 	"github.com/charlessxd/gosu-wrapper/gosu"
+	"fmt"
+	"os"
 )
 
+var (
+	Key    string
+	UserID string
+)
+
+func init() {
+	Key = os.Getenv("API_KEY")
+	UserID = os.Getenv("USER_ID")
+}
+
 func main() {
-    s := gosu.NewSession(os.Getenv("API_KEY"))
-	
-    c := gosu.UserCall{
-        UserID: "1",
-    }
-    
-    u := gosu.User{}
-    
-    if err = s.Fetch(c, u); err != nil {
-        fmt.Println(err.Error())    
-    } else {
-        fmt.Println(u.Username) 
-    }
+	u := gosu.User{}
+
+	c := gosu.UserCall{
+		UserID: UserID,
+	}
+
+	s := gosu.NewSession(Key)
+
+	if user, err := s.FetchUser(c); err != nil {
+		fmt.Println(err)
+		return
+	} else {
+		u = user
+	}
+
+	fmt.Println(u.Username)
 }
 ```
 
