@@ -1,7 +1,7 @@
-package rank_change_notifier
+package main
 
 import (
-	"OsuAPI/gosu-wrapper/gosu"
+	"../gosu"
 	"fmt"
 	"os"
 	"strconv"
@@ -42,9 +42,11 @@ func main() {
 	// Create a User to hold the user metadata.
 	u := gosu.User{}
 
-	if e := s.Fetch(&c, &u); e != nil {
-		fmt.Println(e)
+	if user, err := s.FetchUser(c); err != nil {
+		fmt.Println(err)
 		return
+	} else {
+		u = user
 	}
 
 	// userRankEvent channel containing information about the rank change.
