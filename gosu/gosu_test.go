@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -22,15 +23,9 @@ func TestSession_buildCall(t *testing.T) {
 	}
 }
 
-func TestSession_Fetch(t *testing.T) {
-	s := NewSession("12345")
-
-	c := UserCall{}
-
-	b := Beatmap{}
-
-	if e := s.Fetch(c, b); e == nil {
-		t.Fatal("Expected target mismatch error")
+func Test_getMods(t *testing.T) {
+	if strings.Join(getMods(781), "") != "[NoFail TouchDevice Hidden HalfTime]" {
+		t.Fatal("Expected \"[NoFail TouchDevice Hidden HalfTime]\" but got \"" + strings.Join(getMods(781), "") + "\".")
 	}
 }
 
@@ -39,9 +34,9 @@ func ExampleSession_Fetch() {
 
 	call := UserCall{UserID: os.Getenv("USER_ID")}
 
-	user := User{}
-
-	s.Fetch(call, user)
-
-	fmt.Println(user.Username)
+	if u, e := s.FetchUser(call); e != nil {
+		fmt.Println(e)
+	} else {
+		fmt.Println(u.Username)
+	}
 }

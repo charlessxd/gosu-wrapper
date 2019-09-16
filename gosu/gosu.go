@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -57,4 +58,115 @@ func (s *session) parseJSON(url string, target interface{}) error {
 	s.limiter.iterate()
 
 	return err
+}
+
+func getMods(bitwiseDec int64) []string {
+	binMods := ""
+
+	for _, c := range strconv.FormatInt(bitwiseDec, 2) {
+		binMods = string(c) + binMods
+	}
+
+	mods := []string{}
+
+	if binMods == "0" {
+		mods = append(mods, "NoMod")
+	} else {
+		if binMods[0] == '1' {
+			mods = append(mods, "NoFail")
+		}
+		if len(binMods) >= 2 && binMods[1] == '1' {
+			mods = append(mods, "Easy")
+		}
+		if len(binMods) >= 3 && binMods[2] == '1' {
+			mods = append(mods, "TouchDevice")
+		}
+		if len(binMods) >= 4 && binMods[3] == '1' {
+			mods = append(mods, "Hidden")
+		}
+		if len(binMods) >= 5 && binMods[4] == '1' {
+			mods = append(mods, "HardRock")
+		}
+		if len(binMods) >= 6 && binMods[5] == '1' {
+			if len(binMods) >= 15 && binMods[14] == '1' {
+				mods = append(mods, "Perfect")
+			} else {
+				mods = append(mods, "SuddenDeath")
+			}
+		}
+		if len(binMods) >= 7 && binMods[6] == '1' {
+			if len(binMods) >= 10 && binMods[9] == '1' {
+				mods = append(mods, "Nightcore")
+			} else {
+				mods = append(mods, "DoubleTime")
+			}
+		}
+		if len(binMods) >= 8 && binMods[7] == '1' {
+			mods = append(mods, "Relax")
+		}
+		if len(binMods) >= 9 && binMods[8] == '1' {
+			mods = append(mods, "HalfTime")
+		}
+		if len(binMods) >= 11 && binMods[10] == '1' {
+			mods = append(mods, "Flashlight")
+		}
+		if len(binMods) >= 12 && binMods[11] == '1' {
+			mods = append(mods, "Autoplay")
+		}
+		if len(binMods) >= 13 && binMods[12] == '1' {
+			mods = append(mods, "SpunOut")
+		}
+		if len(binMods) >= 14 && binMods[13] == '1' {
+			mods = append(mods, "Autopilot")
+		}
+		if len(binMods) >= 16 && binMods[15] == '1' {
+			mods = append(mods, "Key4")
+		}
+		if len(binMods) >= 17 && binMods[16] == '1' {
+			mods = append(mods, "Key5")
+		}
+		if len(binMods) >= 18 && binMods[17] == '1' {
+			mods = append(mods, "Key6")
+		}
+		if len(binMods) >= 19 && binMods[18] == '1' {
+			mods = append(mods, "Key7")
+		}
+		if len(binMods) >= 20 && binMods[19] == '1' {
+			mods = append(mods, "Key8")
+		}
+		if len(binMods) >= 21 && binMods[20] == '1' {
+			mods = append(mods, "FadeIn")
+		}
+		if len(binMods) >= 22 && binMods[21] == '1' {
+			mods = append(mods, "Random")
+		}
+		if len(binMods) >= 23 && binMods[22] == '1' {
+			mods = append(mods, "Cinema")
+		}
+		if len(binMods) >= 24 && binMods[23] == '1' {
+			mods = append(mods, "Target")
+		}
+		if len(binMods) >= 25 && binMods[24] == '1' {
+			mods = append(mods, "Key9")
+		}
+		if len(binMods) >= 26 && binMods[25] == '1' {
+			mods = append(mods, "KeyCoop")
+		}
+		if len(binMods) >= 27 && binMods[26] == '1' {
+			mods = append(mods, "Key1")
+		}
+		if len(binMods) >= 28 && binMods[27] == '1' {
+			mods = append(mods, "Key3")
+		}
+		if len(binMods) >= 29 && binMods[28] == '1' {
+			mods = append(mods, "Key2")
+		}
+		if len(binMods) >= 30 && binMods[29] == '1' {
+			mods = append(mods, "ScoreV2")
+		}
+		if len(binMods) >= 31 && binMods[30] == '1' {
+			mods = append(mods, "Mirror")
+		}
+	}
+	return mods
 }

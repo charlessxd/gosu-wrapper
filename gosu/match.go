@@ -67,7 +67,8 @@ type matchGame struct {
 	ScoringType string `json:"scoring_type"`
 
 	// The bitwise flag representation of the mods used.
-	Mods string `json:"mods"`
+	modsInt int64 `json:"mods"`
+	Mods []string
 
 	// The scores of all users who participated in the game.
 	Scores []matchScore `json:"scores"`
@@ -146,6 +147,10 @@ func (s *session) FetchMatch(call MatchCall) (Match, error) {
 	match[0].apiURL = s.buildCall(endpointMatch, v)
 	match[0].session = s
 
+	for i := 0; i <= len(match[0].Games); i++ {
+		match[0].Games[i].Mods = getMods(match[0].Games[i].modsInt)
+	}
+
 	return match[0], nil
 }
 
@@ -163,6 +168,10 @@ func (m *Match) Update() error {
 	}
 	if len(match) == 0 {
 		return errors.New("user not found")
+	}
+
+	for i := 0; i <= len(match[0].Games); i++ {
+		match[0].Games[i].Mods = getMods(match[0].Games[i].modsInt)
 	}
 
 	*m = match[0]

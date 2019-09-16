@@ -58,7 +58,8 @@ type userBestPlay struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	EnabledMods string `json:"enabled_mods"`
+	modsInt int64 `json:"enabled_mods"`
+	EnabledMods []string
 
 	// The ID of the user.
 	UserID string `json:"user_id"`
@@ -117,6 +118,10 @@ func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
 	}
 	if len(userbest) == 0 {
 		return ub, errors.New("user not found")
+	}
+
+	for i := 0; i <= len(ub.Plays); i++ {
+		ub.Plays[i].EnabledMods = getMods(ub.Plays[i].modsInt)
 	}
 
 	ub.apiURL = s.buildCall(endpointUserBest, v)

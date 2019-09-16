@@ -32,5 +32,5 @@ func main() {
 		u = user
 	}
 
-	fmt.Println(u)
+	fmt.Println(u.Username)
 }

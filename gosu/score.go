@@ -67,7 +67,8 @@ type score struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	EnabledMods string `json:"enabled_mods"`
+	modsInt int64 `json:"enabled_mods"`
+	EnabledMods []string
 
 	// The ID of the user.
 	UserID string `json:"user_id"`
@@ -136,6 +137,10 @@ func (s *session) fetchScores(call ScoresCall) (Scores, error) {
 	}
 	if len(scores) == 0 {
 		return ss, errors.New("no scores found")
+	}
+
+	for i := 0; i <= len(ss.Scores); i++ {
+		ss.Scores[i].EnabledMods = getMods(ss.Scores[i].modsInt)
 	}
 
 	ss.apiURL = s.buildCall(endpointScores, v)
