@@ -36,23 +36,23 @@ import (
 )
 
 var (
-	Key    string
-	UserID string
+	key    string
+	userID string
 )
 
 func init() {
-	Key = os.Getenv("API_KEY")
-	UserID = os.Getenv("USER_ID")
+	key = os.Getenv("API_KEY")
+	userID = os.Getenv("USER_ID")
 }
 
 func main() {
 	u := gosu.User{}
 
 	c := gosu.UserCall{
-		UserID: UserID,
+		UserID: userID,
 	}
 
-	s := gosu.NewSession(Key)
+	s := gosu.NewSession(key)
 
 	if user, err := s.FetchUser(c); err != nil {
 		fmt.Println(err)
