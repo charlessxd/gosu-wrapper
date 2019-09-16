@@ -70,6 +70,4 @@ All exported variables and functions have been documented:
 
 [![GoDoc](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu?status.svg)](https://godoc.org/github.com/charlessxd/gosu-wrapper/gosu) 
 
-## To do
-* Mod support
 
