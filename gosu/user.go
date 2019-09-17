@@ -92,6 +92,8 @@ type User struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall UserCall
 }
 
 // userEvent stores data for events related to an individual osu user.
@@ -143,26 +145,18 @@ func (s *session) FetchUser(call UserCall) (User, error) {
 
 	user[0].apiURL = s.buildCall(endpointUser, v)
 	user[0].session = s
+	user[0].apiCall = call
 
 	return user[0], nil
 }
 
 // Update updates a User.
 func (u *User) Update() error {
-	user := *new([]User)
-
-	err := u.session.parseJSON(u.apiURL, user)
+	tempUser, err := u.session.FetchUser(u.apiCall)
+	*u = tempUser
 
 	if err != nil {
 		return err
 	}
-	if u.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(user) == 0 {
-		return errors.New("user not found")
-	}
-
-	*u = user[0]
 	return nil
 }

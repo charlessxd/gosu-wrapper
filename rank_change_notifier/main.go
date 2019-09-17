@@ -47,6 +47,7 @@ func main() {
 		return
 	} else {
 		u = user
+		fmt.Println(u.Username)
 	}
 
 	// userRankEvent channel containing information about the rank change.
@@ -57,7 +58,9 @@ func main() {
 	go func(e chan userRankEvent) {
 		for {
 			t := u
-			u.Update()
+			if e := u.Update(); e != nil {
+				fmt.Println(e)
+			}
 
 			if t.PPRank != u.PPRank {
 				change := ""
@@ -81,7 +84,7 @@ func main() {
 		select {
 		case e := <-event: // When rank change event has occurred.
 			fmt.Println(e.changeF)
-			fmt.Printf("%s is now rank: %d", e.user.Username, e.user.PPRank)
+			fmt.Println(fmt.Sprintf("%s is now rank: %d", e.user.Username, e.user.PPRank))
 		}
 	}
 }
