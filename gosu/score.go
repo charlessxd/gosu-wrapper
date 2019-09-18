@@ -67,7 +67,7 @@ type score struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	modsInt int64 `json:"enabled_mods"`
+	ModsInt int64 `json:"enabled_mods,string"`
 	EnabledMods []string
 
 	// The ID of the user.
@@ -96,10 +96,12 @@ type Scores struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall ScoresCall
 }
 
 // FetchScores returns metadata about scores set on a beatmap.
-func (s *session) fetchScores(call ScoresCall) (Scores, error) {
+func (s *session) FetchScores(call ScoresCall) (Scores, error) {
 	scores := *new([]score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
@@ -127,7 +129,7 @@ func (s *session) fetchScores(call ScoresCall) (Scores, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointScores, v), scores)
+	err := s.parseJSON(s.buildCall(endpointScores, v), &scores)
 
 	ss := *new(Scores)
 	ss.Scores = scores
@@ -139,8 +141,8 @@ func (s *session) fetchScores(call ScoresCall) (Scores, error) {
 		return ss, errors.New("no scores found")
 	}
 
-	for i := 0; i <= len(ss.Scores); i++ {
-		ss.Scores[i].EnabledMods = getMods(ss.Scores[i].modsInt)
+	for i := 0; i < len(ss.Scores); i++ {
+		ss.Scores[i].EnabledMods = getMods(ss.Scores[i].ModsInt)
 	}
 
 	ss.apiURL = s.buildCall(endpointScores, v)
@@ -151,20 +153,11 @@ func (s *session) fetchScores(call ScoresCall) (Scores, error) {
 
 // Update updates the Scores on a Beatmap
 func (ss *Scores) Update() error {
-	scores := *new([]score)
-
-	err := ss.session.parseJSON(ss.apiURL, scores)
+	temp, err := ss.session.FetchScores(ss.apiCall)
+	*ss = temp
 
 	if err != nil {
 		return err
 	}
-	if ss.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(scores) == 0 {
-		return errors.New("user not found")
-	}
-
-	ss.Scores = scores
 	return nil
 }

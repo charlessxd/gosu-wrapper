@@ -28,6 +28,9 @@ type User struct {
 	// The name of the user.
 	Username string `json:"username"`
 
+	// The date the user's account was created, in UTC.
+	JoinDate string `json:"join_date"`
+
 	// The number of 300s the user has gotten for all ranked, approved, and loved beatmaps played.
 	Count300 int `json:"count300,string"`
 
@@ -152,8 +155,8 @@ func (s *session) FetchUser(call UserCall) (User, error) {
 
 // Update updates a User.
 func (u *User) Update() error {
-	tempUser, err := u.session.FetchUser(u.apiCall)
-	*u = tempUser
+	temp, err := u.session.FetchUser(u.apiCall)
+	*u = temp
 
 	if err != nil {
 		return err

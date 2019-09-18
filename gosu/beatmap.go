@@ -55,6 +55,10 @@ type Beatmap struct {
 	// The star rating of the beatmap.
 	DifficultyRating float64 `json:"difficultyrating,string"`
 
+	DifficultyAim float64 `json:"diff_aim,string"`
+
+	DifficultySpeed float64 `json:"diff_speed,string"`
+
 	// The circle size used in the beatmap.
 	CircleSize float64 `json:"diff_size,string"`
 
@@ -109,14 +113,31 @@ type Beatmap struct {
 	// The number of times the beatmap has been passed, completed.
 	PassCount int `json:"passcount,string"`
 
+	// The number of circles in the map.
+	CircleCount int `json:"count_normal,string"`
+
+	// The number of sliders in the map.
+	SliderCount int `json:"count_slider,string"`
+
+	// The number of spinners in the map.
+	SpinnerCount int `json:"count_spinner,string"`
+
 	// The maximum combo a user can reach playing the beatmap.
 	MaxCombo int `json:"max_combo,string"`
+
+	// If the download for this beatmap is unavailable (old map, etc.)
+	DownloadUnavailable int `json:"download_unavailable,string"`
+
+	// If the audio for this beatmap is unavailable (DMCA takedown, etc.)
+	AudioUnavailable int `json:"audio_unavailable,string"`
 
 	// API Call URL.
 	apiURL string
 
 	// Session fetched from
 	session *session
+
+	apiCall BeatmapCall
 }
 
 // FetchBeatmap returns metadata about one beatmap
@@ -142,7 +163,7 @@ func (s *session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 		v.Add(endpointParamHash, call.Hash)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmap)
+	err := s.parseJSON(s.buildCall(endpointBeatmaps, v), &beatmap)
 
 	if err != nil {
 		return Beatmap{}, err
@@ -159,20 +180,11 @@ func (s *session) FetchBeatmap(call BeatmapCall) (Beatmap, error) {
 
 // Update updates a beatmap.
 func (b *Beatmap) Update() error {
-	beatmap := *new([]Beatmap)
-
-	err := b.session.parseJSON(b.apiURL, beatmap)
+	temp, err := b.session.FetchBeatmap(b.apiCall)
+	*b = temp
 
 	if err != nil {
 		return err
 	}
-	if b.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(beatmap) == 0 {
-		return errors.New("user not found")
-	}
-
-	*b = beatmap[0]
 	return nil
 }

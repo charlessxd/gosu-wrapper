@@ -24,7 +24,7 @@ type UserBestCall struct {
 	Type string
 }
 
-// userBest stores data for a defined amount of top plays for a specific osu user.
+// userBestPlay stores data for a defined amount of top plays for a specific osu user.
 type userBestPlay struct {
 	// The ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
@@ -58,7 +58,7 @@ type userBestPlay struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	modsInt int64 `json:"enabled_mods"`
+	ModsInt int64 `json:"enabled_mods,string"`
 	EnabledMods []string
 
 	// The ID of the user.
@@ -83,6 +83,8 @@ type UserBest struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall UserBestCall
 }
 
 // FetchUserBest returns metadata about a user's highest rated plays.
@@ -108,20 +110,20 @@ func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointUserBest, v), userbest)
+	err := s.parseJSON(s.buildCall(endpointUserBest, v), &userbest)
 
 	ub := *new(UserBest)
 	ub.Plays = userbest
+
+	for i := 0; i < len(ub.Plays); i++ {
+		ub.Plays[i].EnabledMods = getMods(ub.Plays[i].ModsInt)
+	}
 
 	if err != nil {
 		return ub, err
 	}
 	if len(userbest) == 0 {
 		return ub, errors.New("user not found")
-	}
-
-	for i := 0; i <= len(ub.Plays); i++ {
-		ub.Plays[i].EnabledMods = getMods(ub.Plays[i].modsInt)
 	}
 
 	ub.apiURL = s.buildCall(endpointUserBest, v)
@@ -131,21 +133,12 @@ func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
 }
 
 // Update updates a User's top plays.
-func (u *UserBest) Update() error {
-	up := *new([]userBestPlay)
-
-	err := u.session.parseJSON(u.apiURL, up)
+func (ub *UserBest) Update() error {
+	temp, err := ub.session.FetchUserBest(ub.apiCall)
+	*ub = temp
 
 	if err != nil {
 		return err
 	}
-	if u.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(up) == 0 {
-		return errors.New("user not found")
-	}
-
-	u.Plays = up
 	return nil
 }

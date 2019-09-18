@@ -62,7 +62,6 @@ func (s *session) parseJSON(url string, target interface{}) error {
 
 func getMods(bitwiseDec int64) []string {
 	binMods := ""
-
 	for _, c := range strconv.FormatInt(bitwiseDec, 2) {
 		binMods = string(c) + binMods
 	}
@@ -70,96 +69,96 @@ func getMods(bitwiseDec int64) []string {
 	mods := []string{}
 
 	if binMods == "0" {
-		mods = append(mods, "NoMod")
+		mods = append(mods, "No Mod")
 	} else {
 		if binMods[0] == '1' {
-			mods = append(mods, "NoFail")
+			mods = append(mods, "NF")
 		}
 		if len(binMods) >= 2 && binMods[1] == '1' {
-			mods = append(mods, "Easy")
+			mods = append(mods, "EZ")
 		}
 		if len(binMods) >= 3 && binMods[2] == '1' {
-			mods = append(mods, "TouchDevice")
+			mods = append(mods, "TD")
 		}
 		if len(binMods) >= 4 && binMods[3] == '1' {
-			mods = append(mods, "Hidden")
+			mods = append(mods, "HD")
 		}
 		if len(binMods) >= 5 && binMods[4] == '1' {
-			mods = append(mods, "HardRock")
+			mods = append(mods, "HR")
 		}
 		if len(binMods) >= 6 && binMods[5] == '1' {
 			if len(binMods) >= 15 && binMods[14] == '1' {
-				mods = append(mods, "Perfect")
+				mods = append(mods, "PF")
 			} else {
-				mods = append(mods, "SuddenDeath")
+				mods = append(mods, "SD")
 			}
 		}
 		if len(binMods) >= 7 && binMods[6] == '1' {
 			if len(binMods) >= 10 && binMods[9] == '1' {
-				mods = append(mods, "Nightcore")
+				mods = append(mods, "NC")
 			} else {
-				mods = append(mods, "DoubleTime")
+				mods = append(mods, "DT")
 			}
 		}
 		if len(binMods) >= 8 && binMods[7] == '1' {
-			mods = append(mods, "Relax")
+			mods = append(mods, "RL")
 		}
 		if len(binMods) >= 9 && binMods[8] == '1' {
-			mods = append(mods, "HalfTime")
+			mods = append(mods, "HT")
 		}
 		if len(binMods) >= 11 && binMods[10] == '1' {
-			mods = append(mods, "Flashlight")
+			mods = append(mods, "FL")
 		}
 		if len(binMods) >= 12 && binMods[11] == '1' {
 			mods = append(mods, "Autoplay")
 		}
 		if len(binMods) >= 13 && binMods[12] == '1' {
-			mods = append(mods, "SpunOut")
+			mods = append(mods, "SO")
 		}
 		if len(binMods) >= 14 && binMods[13] == '1' {
-			mods = append(mods, "Autopilot")
+			mods = append(mods, "AP")
 		}
 		if len(binMods) >= 16 && binMods[15] == '1' {
-			mods = append(mods, "Key4")
+			mods = append(mods, "4K")
 		}
 		if len(binMods) >= 17 && binMods[16] == '1' {
-			mods = append(mods, "Key5")
+			mods = append(mods, "5K")
 		}
 		if len(binMods) >= 18 && binMods[17] == '1' {
-			mods = append(mods, "Key6")
+			mods = append(mods, "6K")
 		}
 		if len(binMods) >= 19 && binMods[18] == '1' {
-			mods = append(mods, "Key7")
+			mods = append(mods, "7K")
 		}
 		if len(binMods) >= 20 && binMods[19] == '1' {
-			mods = append(mods, "Key8")
+			mods = append(mods, "8K")
 		}
 		if len(binMods) >= 21 && binMods[20] == '1' {
-			mods = append(mods, "FadeIn")
+			mods = append(mods, "FI")
 		}
 		if len(binMods) >= 22 && binMods[21] == '1' {
-			mods = append(mods, "Random")
+			mods = append(mods, "RD")
 		}
 		if len(binMods) >= 23 && binMods[22] == '1' {
 			mods = append(mods, "Cinema")
 		}
 		if len(binMods) >= 24 && binMods[23] == '1' {
-			mods = append(mods, "Target")
+			mods = append(mods, "TP")
 		}
 		if len(binMods) >= 25 && binMods[24] == '1' {
-			mods = append(mods, "Key9")
+			mods = append(mods, "9K")
 		}
 		if len(binMods) >= 26 && binMods[25] == '1' {
 			mods = append(mods, "KeyCoop")
 		}
 		if len(binMods) >= 27 && binMods[26] == '1' {
-			mods = append(mods, "Key1")
+			mods = append(mods, "1K")
 		}
 		if len(binMods) >= 28 && binMods[27] == '1' {
-			mods = append(mods, "Key3")
+			mods = append(mods, "3K")
 		}
 		if len(binMods) >= 29 && binMods[28] == '1' {
-			mods = append(mods, "Key2")
+			mods = append(mods, "2K")
 		}
 		if len(binMods) >= 30 && binMods[29] == '1' {
 			mods = append(mods, "ScoreV2")

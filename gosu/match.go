@@ -24,6 +24,8 @@ type Match struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall MatchCall
 }
 
 // matchDetails stores data for the details of a specific multi-player match.
@@ -67,8 +69,8 @@ type matchGame struct {
 	ScoringType string `json:"scoring_type"`
 
 	// The bitwise flag representation of the mods used.
-	modsInt int64 `json:"mods"`
-	Mods []string
+	ModsInt int64 `json:"enabled_mods,string"`
+	EnabledMods []string
 
 	// The scores of all users who participated in the game.
 	Scores []matchScore `json:"scores"`
@@ -135,7 +137,7 @@ func (s *session) FetchMatch(call MatchCall) (Match, error) {
 		return Match{}, errors.New("no identifying param given (MatchID)")
 	}
 
-	err := s.parseJSON(s.buildCall(endpointMatch, v), match)
+	err := s.parseJSON(s.buildCall(endpointMatch, v), &match)
 
 	if err != nil {
 		return Match{}, err
@@ -147,8 +149,8 @@ func (s *session) FetchMatch(call MatchCall) (Match, error) {
 	match[0].apiURL = s.buildCall(endpointMatch, v)
 	match[0].session = s
 
-	for i := 0; i <= len(match[0].Games); i++ {
-		match[0].Games[i].Mods = getMods(match[0].Games[i].modsInt)
+	for i := 0; i < len(match[0].Games); i++ {
+		match[0].Games[i].EnabledMods = getMods(match[0].Games[i].ModsInt)
 	}
 
 	return match[0], nil
@@ -156,24 +158,11 @@ func (s *session) FetchMatch(call MatchCall) (Match, error) {
 
 // Update updates a Match.
 func (m *Match) Update() error {
-	match := *new([]Match)
-
-	err := m.session.parseJSON(m.apiURL, match)
+	temp, err := m.session.FetchMatch(m.apiCall)
+	*m = temp
 
 	if err != nil {
 		return err
 	}
-	if m.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(match) == 0 {
-		return errors.New("user not found")
-	}
-
-	for i := 0; i <= len(match[0].Games); i++ {
-		match[0].Games[i].Mods = getMods(match[0].Games[i].modsInt)
-	}
-
-	*m = match[0]
 	return nil
 }

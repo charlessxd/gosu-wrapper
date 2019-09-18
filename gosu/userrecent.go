@@ -58,7 +58,7 @@ type userRecentPlay struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	modsInt int64 `json:"enabled_mods"`
+	ModsInt int64 `json:"enabled_mods,string"`
 	EnabledMods []string
 
 	// The ID of the user.
@@ -80,6 +80,8 @@ type UserRecent struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall UserRecentCall
 }
 
 // FetchUserRecent returns metadata about a user's recent plays.
@@ -105,7 +107,7 @@ func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 		v.Add(endpointParamLimit, call.Limit)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointUserRecent, v), plays)
+	err := s.parseJSON(s.buildCall(endpointUserRecent, v), &plays)
 
 	userrecent := *new(UserRecent)
 	userrecent.Plays = plays
@@ -117,8 +119,8 @@ func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 		return userrecent, errors.New("user not found")
 	}
 
-	for i := 0; i <= len(userrecent.Plays); i++ {
-		userrecent.Plays[i].EnabledMods = getMods(userrecent.Plays[i].modsInt)
+	for i := 0; i < len(userrecent.Plays); i++ {
+		userrecent.Plays[i].EnabledMods = getMods(userrecent.Plays[i].ModsInt)
 	}
 
 	userrecent.apiURL = s.buildCall(endpointUserRecent, v)
@@ -128,21 +130,12 @@ func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 }
 
 // Update updates a User's recent plays.
-func (u *UserRecent) Update() error {
-	ur := *new([]userRecentPlay)
-
-	err := u.session.parseJSON(u.apiURL, ur)
+func (ur *UserRecent) Update() error {
+	temp, err := ur.session.FetchUserRecent(ur.apiCall)
+	*ur = temp
 
 	if err != nil {
 		return err
 	}
-	if u.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(ur) == 0 {
-		return errors.New("user not found")
-	}
-
-	u.Plays = ur
 	return nil
 }

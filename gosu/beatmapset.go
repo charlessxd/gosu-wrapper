@@ -47,6 +47,8 @@ type Beatmaps struct {
 
 	// Session fetched from
 	session *session
+
+	apiCall BeatmapsCall
 }
 
 // FetchBeatmaps returns metadata about multiple beatmaps.
@@ -80,7 +82,7 @@ func (s *session) FetchBeatmaps(call BeatmapsCall) (Beatmaps, error) {
 		v.Add(endpointParamType, call.Type)
 	}
 
-	err := s.parseJSON(s.buildCall(endpointBeatmaps, v), beatmaps)
+	err := s.parseJSON(s.buildCall(endpointBeatmaps, v), &beatmaps)
 
 	if err != nil {
 		return Beatmaps{}, err
@@ -115,21 +117,13 @@ func (s *session) FetchBeatmaps(call BeatmapsCall) (Beatmaps, error) {
 
 // Update updates a Beatmapset
 func (set *Beatmaps) Update() error {
-	beatmaps := *new([]Beatmap)
-
-	err := set.session.parseJSON(set.apiURL, beatmaps)
+	temp, err := set.session.FetchBeatmaps(set.apiCall)
+	*set = temp
 
 	if err != nil {
 		return err
 	}
-	if set.apiURL == "" {
-		return errors.New("could not update user: user is empty")
-	}
-	if len(beatmaps) == 0 {
-		return errors.New("user not found")
-	}
-
-	set.Beatmaps = beatmaps
+	return nil
 
 	// Allows for the updating of individual beatmaps
 	for i := 0; i < len(set.Beatmaps); i++ {
