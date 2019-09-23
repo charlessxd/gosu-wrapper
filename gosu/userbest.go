@@ -3,6 +3,7 @@ package gosu
 import (
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // UserBestCall is used to build an API call to retrieve metadata on a user's top plays.
@@ -58,7 +59,7 @@ type userBestPlay struct {
 	Perfect string `json:"perfect"`
 
 	// The bitwise flag representation of the mods used.
-	ModsInt int64 `json:"enabled_mods,string"`
+	ModsInt     int64 `json:"enabled_mods,string"`
 	EnabledMods []string
 
 	// The ID of the user.
@@ -89,6 +90,12 @@ type UserBest struct {
 
 // FetchUserBest returns metadata about a user's highest rated plays.
 func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
+	if i, e := strconv.ParseInt(call.Limit, 10, 64); i > 100 {
+		return UserBest{}, errors.New("limit parameter exceeds maximum limit (Max limit: 100)")
+	} else if e != nil {
+		return UserBest{}, e
+	}
+
 	userbest := *new([]userBestPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

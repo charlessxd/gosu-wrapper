@@ -10,17 +10,20 @@ import (
 var (
 	key    string
 	userID string
+	limit  string
 )
 
 func init() {
 	key = os.Getenv("API_KEY")
 	userID = os.Getenv("USER_ID")
+	limit = os.Getenv("SCORE_LIMIT")
 }
 
 func main() {
 	s := gosu.NewSession(key)
+	s.SetRateLimit(105, 60)
 
-	if ub, e := s.FetchUserBest(gosu.UserBestCall{UserID: userID,}); e != nil {
+	if ub, e := s.FetchUserBest(gosu.UserBestCall{UserID: userID, Limit: limit}); e != nil {
 		fmt.Println(e)
 	} else {
 		if u, e := s.FetchUser(gosu.UserCall{UserID: userID,}); e != nil {
@@ -28,7 +31,7 @@ func main() {
 		} else {
 			fmt.Println(u.Username + "'s  Top 10 Plays")
 
-			for i := 0; i < 10; i++ {
+			for i := 0; i < len(ub.Plays); i++ {
 				if b, e := s.FetchBeatmap(gosu.BeatmapCall{BeatmapID: ub.Plays[i].BeatmapID}); e != nil {
 					fmt.Println(e)
 				} else {

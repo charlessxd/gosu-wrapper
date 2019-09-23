@@ -3,6 +3,7 @@ package gosu
 import (
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // ScoresCall is used to build an API call to retrieve metadata of scores set on a beatmap.
@@ -102,6 +103,12 @@ type Scores struct {
 
 // FetchScores returns metadata about scores set on a beatmap.
 func (s *session) FetchScores(call ScoresCall) (Scores, error) {
+	if i, e := strconv.ParseInt(call.Limit, 10, 64); i > 100 {
+		return Scores{}, errors.New("limit parameter exceeds maximum limit (Max limit: 100)")
+	} else if e != nil {
+		return Scores{}, e
+	}
+
 	scores := *new([]score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)

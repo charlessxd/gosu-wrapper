@@ -3,6 +3,7 @@ package gosu
 import (
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // UserRecentCall is used to build an API call to retrieve metadata on a user's recent plays.
@@ -86,6 +87,12 @@ type UserRecent struct {
 
 // FetchUserRecent returns metadata about a user's recent plays.
 func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
+	if i, e := strconv.ParseInt(call.Limit, 10, 64); i > 100 {
+		return UserRecent{}, errors.New("limit parameter exceeds maximum limit (Max limit: 100)")
+	} else if e != nil {
+		return UserRecent{}, e
+	}
+	
 	plays := *new([]userRecentPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
