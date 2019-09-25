@@ -26,7 +26,7 @@ type UserRecentCall struct {
 }
 
 // userRecentPlay stores data for all recent plays an individual osu user has submitted.
-type userRecentPlay struct {
+type UserRecentPlay struct {
 	// ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -70,11 +70,13 @@ type userRecentPlay struct {
 
 	// The letter ranking of the top play.
 	Rank string `json:"rank"`
+
+	Accuracy float64
 }
 
 // UserRecent stores UserRecentPlays and allows for them to be updated using Update.
 type UserRecent struct {
-	Plays []userRecentPlay
+	Plays []UserRecentPlay
 
 	// API Call URL.
 	apiURL string
@@ -92,8 +94,8 @@ func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 	} else if e != nil {
 		return UserRecent{}, e
 	}
-	
-	plays := *new([]userRecentPlay)
+
+	plays := *new([]UserRecentPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -126,8 +128,9 @@ func (s *session) FetchUserRecent(call UserRecentCall) (UserRecent, error) {
 		return userrecent, errors.New("user not found")
 	}
 
-	for i := 0; i < len(userrecent.Plays); i++ {
-		userrecent.Plays[i].EnabledMods = getMods(userrecent.Plays[i].ModsInt)
+	for i, play := range userrecent.Plays {
+		userrecent.Plays[i].EnabledMods = getMods(play.ModsInt)
+		userrecent.Plays[i].Accuracy = getAcc(play.CountMiss, play.Count50, play.Count100, play.Count300)
 	}
 
 	userrecent.apiURL = s.buildCall(endpointUserRecent, v)

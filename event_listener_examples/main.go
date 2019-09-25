@@ -24,6 +24,12 @@ type userRankEvent struct {
 	changeF   string
 }
 
+type topPlayEvent struct {
+	user        gosu.User
+	play        gosu.UserBestPlay
+	playRanking int
+}
+
 /*
 	This is an example of a rank tracker. This example shows how you can go
 	about tracking a user's rank, and outputting the change when it occurs.
@@ -51,15 +57,15 @@ func main() {
 	}
 
 	// userRankEvent channel containing information about the rank change.
-	event := make(chan userRankEvent)
+	rankEvent := make(chan userRankEvent)
 
 	// Go routine to check for changes in a user's rank in terms of Performance Points.
 	// Checks for rank changes every 5 seconds.
 	go func(e chan userRankEvent) {
 		for {
 			t := u
-			if e := u.Update(); e != nil {
-				fmt.Println(e)
+			if err := u.Update(); err != nil {
+				fmt.Println(err)
 			}
 
 			if t.PPRank != u.PPRank {
@@ -78,13 +84,49 @@ func main() {
 
 			time.Sleep(time.Second * 5)
 		}
-	}(event)
+	}(rankEvent)
+
+	tpEvent := make(chan topPlayEvent)
+
+	ub, _ := s.FetchUserBest(gosu.UserBestCall{UserID: u.UserID})
+
+	go func(e chan topPlayEvent) {
+		for {
+			t := ub
+			if err := u.Update(); err != nil {
+				fmt.Println(err)
+			}
+
+			for i, play := range ub.Plays {
+				if ub.Plays[i].Date != t.Plays[i].Date {
+					if i <= 5 {
+						e <- topPlayEvent{u, play, i + 1}
+					}
+				}
+			}
+		}
+	}(tpEvent)
 
 	for {
 		select {
-		case e := <-event: // When rank change event has occurred.
+		case e := <-rankEvent: // When rank change event has occurred.
 			fmt.Println(e.changeF)
 			fmt.Println(fmt.Sprintf("%s is now rank: %d", e.user.Username, e.user.PPRank))
+
+		case e := <-tpEvent:
+			fmt.Println(u.Username + " has a new top 5 play!")
+			if b, err := s.FetchBeatmap(gosu.BeatmapCall{BeatmapID: e.play.BeatmapID}); err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Print("\n" + strconv.Itoa(e.playRanking) + ". " + b.Title + " - " + b.Artist)
+				fmt.Print(" [" + b.Version + "] +")
+				for x := 0; x < len(e.play.EnabledMods); x++ {
+					fmt.Print(e.play.EnabledMods[x])
+				}
+				fmt.Print(" " + fmt.Sprintf("%.f", e.play.PP) + "pp")
+				fmt.Print(" " + strconv.Itoa(e.play.MaxCombo) + "/" + strconv.Itoa(b.MaxCombo))
+				fmt.Print(" " + fmt.Sprintf("%.2f", e.play.Accuracy) + "%")
+			}
 		}
 	}
 }

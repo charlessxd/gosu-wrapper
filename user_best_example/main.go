@@ -31,16 +31,18 @@ func main() {
 		} else {
 			fmt.Println(u.Username + "'s  Top 10 Plays")
 
-			for i := 0; i < len(ub.Plays); i++ {
-				if b, e := s.FetchBeatmap(gosu.BeatmapCall{BeatmapID: ub.Plays[i].BeatmapID}); e != nil {
+			for i, play := range ub.Plays {
+				if b, e := s.FetchBeatmap(gosu.BeatmapCall{BeatmapID: play.BeatmapID}); e != nil {
 					fmt.Println(e)
 				} else {
 					fmt.Print("\n" + strconv.Itoa(i+1) + ". " + b.Title + " - " + b.Artist)
 					fmt.Print(" [" + b.Version + "] +")
-					for x := 0; x < len(ub.Plays[i].EnabledMods); x++ {
-						fmt.Print(ub.Plays[i].EnabledMods[x])
+					for x := 0; x < len(play.EnabledMods); x++ {
+						fmt.Print(play.EnabledMods[x])
 					}
-					fmt.Print(" " + fmt.Sprintf("%.f", ub.Plays[i].PP) + "pp")
+					fmt.Print(" " + fmt.Sprintf("%.f", play.PP) + "pp")
+					fmt.Print(" " + strconv.Itoa(play.MaxCombo) + "/" + strconv.Itoa(b.MaxCombo))
+					fmt.Print(" " + fmt.Sprintf("%.2f", play.Accuracy) + "%")
 				}
 			}
 		}

@@ -60,6 +60,11 @@ func (s *session) parseJSON(url string, target interface{}) error {
 	return err
 }
 
+func getAcc(miss, fif, hun, thun int) float64 {
+	return float64((50*fif)+(100*hun)+(300*thun)) / float64(300*(miss+fif+hun+thun))*100
+	//return float64/*((50*fif)+(100*hun)+(300*thun))/*/(300*(miss+fif+hun+thun))
+}
+
 func getMods(bitwiseDec int64) []string {
 	binMods := ""
 	for _, c := range strconv.FormatInt(bitwiseDec, 2) {

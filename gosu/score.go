@@ -31,8 +31,8 @@ type ScoresCall struct {
 	Limit string
 }
 
-// score stores the data for the top 100 scores of a specific beatmap.
-type score struct {
+// Score stores the data for the top 100 scores of a specific beatmap.
+type Score struct {
 	// The ID of the score.
 	ScoreID string `json:"score_id"`
 
@@ -86,11 +86,13 @@ type score struct {
 	// Whether osu official servers store the replay.
 	// 1 = is stored, 0 = is not stored.
 	ReplayAvailable string `json:"replay_available"`
+
+	Accuracy float64
 }
 
 // Scores stores scores.
 type Scores struct {
-	Scores []score
+	Scores []Score
 
 	// API Call URL.
 	apiURL string
@@ -109,7 +111,7 @@ func (s *session) FetchScores(call ScoresCall) (Scores, error) {
 		return Scores{}, e
 	}
 
-	scores := *new([]score)
+	scores := *new([]Score)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -148,8 +150,9 @@ func (s *session) FetchScores(call ScoresCall) (Scores, error) {
 		return ss, errors.New("no scores found")
 	}
 
-	for i := 0; i < len(ss.Scores); i++ {
-		ss.Scores[i].EnabledMods = getMods(ss.Scores[i].ModsInt)
+	for i, score := range ss.Scores {
+		ss.Scores[i].EnabledMods = getMods(score.ModsInt)
+		ss.Scores[i].Accuracy = getAcc(score.CountMiss, score.Count50, score.Count100, score.Count300)
 	}
 
 	ss.apiURL = s.buildCall(endpointScores, v)

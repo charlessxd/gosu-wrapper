@@ -26,7 +26,7 @@ type UserBestCall struct {
 }
 
 // userBestPlay stores data for a defined amount of top plays for a specific osu user.
-type userBestPlay struct {
+type UserBestPlay struct {
 	// The ID of the beatmap.
 	BeatmapID string `json:"beatmap_id"`
 
@@ -73,11 +73,13 @@ type userBestPlay struct {
 
 	// PP rewarded for achieving the play, as a float value.
 	PP float64 `json:"pp,string"`
+
+	Accuracy float64
 }
 
 // UserBest holds plays
 type UserBest struct {
-	Plays []userBestPlay
+	Plays []UserBestPlay
 
 	// API Call URL.
 	apiURL string
@@ -96,7 +98,7 @@ func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
 		return UserBest{}, e
 	}
 
-	userbest := *new([]userBestPlay)
+	userbest := *new([]UserBestPlay)
 	v := url.Values{}
 	v.Add(endpointAPIKey, s.key)
 
@@ -122,8 +124,9 @@ func (s *session) FetchUserBest(call UserBestCall) (UserBest, error) {
 	ub := *new(UserBest)
 	ub.Plays = userbest
 
-	for i := 0; i < len(ub.Plays); i++ {
-		ub.Plays[i].EnabledMods = getMods(ub.Plays[i].ModsInt)
+	for i, play := range ub.Plays {
+		ub.Plays[i].EnabledMods = getMods(play.ModsInt)
+		ub.Plays[i].Accuracy = getAcc(play.CountMiss, play.Count50, play.Count100, play.Count300)
 	}
 
 	if err != nil {
